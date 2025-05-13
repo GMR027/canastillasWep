@@ -1,0 +1,15 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.nosotros {
+  padding: 2rem 0;
+  @include m.flex-column;
+  @include m.contenedor;
+  @include m.tablet {
+    @include m.grid(2);
+  }
+
+  &-informacion {
+    @include m.flex-column;
+  }
+}

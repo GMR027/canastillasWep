@@ -1,0 +1,50 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.cobertura {
+  @include m.contenedor;
+  @include m.flex-column;
+  margin-top: 4rem;
+
+  @include m.tablet {
+    @include m.grid(2);
+  }
+
+  &-informacion {
+    .iconos {
+      display: flex;
+      justify-content: space-between;
+
+      .icono {
+        @include m.flex-column;
+
+        svg {
+          color: v.$naranja;
+          width: 4rem;
+          height: 4rem;
+        }
+      }
+    }
+
+    .nota {
+      font-style: italic;
+      font-weight: 500;
+    }
+  }
+}
+
+.cobertura-destinos {
+  padding: 2rem 0;
+  @include m.contenedor;
+  @include m.grid(2);
+  @include m.tablet {
+    @include m.grid(4);
+  }
+
+  li {
+    svg {
+      color: v.$azul;
+    }
+  }
+}

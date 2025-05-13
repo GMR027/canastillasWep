@@ -1,0 +1,102 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  scroll-padding-top: 0rem;
+}
+*, 
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: 1.5rem;
+}
+
+h1, h2, h3, h4{
+  text-transform: uppercase;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: v.$azul;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+button, .button {
+  width: 80%;
+  border: none;
+  padding: 1rem 0;
+  border-radius: 2rem;
+  background-color: v.$negroClaro;
+  color: v.$blanco;
+  cursor: pointer;
+  text-align: center;
+
+  @include m.tablet {
+    width: 50%;
+  }
+
+   &:hover {
+    background-color: v.$gris;
+    color: v.$blancoOpaco;
+   }
+
+}
+
+img {
+  max-width: 100%;
+  max-height: 30rem;
+  border-radius: 1rem;
+  margin: 0 auto;
+}
+
+
+.button-round {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 2rem;
+  background-color: v.$negroClaro;
+  color: v.$blanco;
+  cursor: pointer;
+  text-align: center;
+  margin: 0 1rem;
+  @include m.flex-column;
+  justify-content: center;
+
+   &:hover {
+    background-color: v.$gris;
+    color: v.$blancoOpaco;
+   }
+}
+
+li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    margin-right: .3rem;
+    width: 2rem;
+    height: 2rem;
+  }
+}

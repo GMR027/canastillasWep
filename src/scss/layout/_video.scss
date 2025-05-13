@@ -1,0 +1,98 @@
+@use 'sass:color';
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.video {
+  position: relative;
+  min-height: 20rem;
+  max-height: 40rem;
+  overflow: hidden;
+
+  .overlay {
+    position: absolute;
+    background: linear-gradient(
+      270deg,
+      rgba(v.$naranja, 50%),
+      rgba(color.adjust(v.$negroAzul,$lightness: -20%), 80%)
+    );
+
+    inset: 0;
+  }
+
+  video {
+    @include m.tablet {
+      width: 100%;
+    }
+  }
+}
+
+
+.overlay {
+  .navbar {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    @include m.contenedor;
+
+    @include m.tablet {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+    a {
+      color: v.$blanco;
+      cursor: pointer;
+      padding: 1rem;
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: solid 2px v.$gris;
+      margin: 1rem 0;
+      width: 80%;
+      text-align: center;
+      text-transform: uppercase;
+
+      @include m.tablet {
+        backdrop-filter: none;
+        border: none;
+        border-radius: .2rem;
+        margin: 1rem 0;
+        width: 80%;
+        text-align: inherit;
+        width: auto;
+      }
+
+      &:hover {
+        background-color: v.$negroAzul;
+      }
+    }
+  }
+
+  .titulo {
+    @include m.contenedor;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+
+    @include m.tablet {
+      margin-top: 14rem;
+    }
+
+    img {
+      width: auto;
+      height: 5rem;
+    }
+    
+
+
+    p {
+      text-align: center;
+      background-color: v.$naranja;
+      padding: 1rem;
+      border-radius: .5rem;
+      color: v.$blanco;
+    }
+  }
+}

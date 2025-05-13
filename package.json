@@ -1,0 +1,24 @@
+{
+  "name": "canastillas-de-la-baja",
+  "version": "1.5.0",
+  "description": "Pagina web 1.5version",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch src/scss:build/css",
+    "dev": "gulp dev"
+  },
+  "keywords": [
+    "html",
+    "sass",
+    "js",
+    "gulp"
+  ],
+  "author": "Edgar Guzmnam",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "gulp-sass": "^6.0.0",
+    "sass": "^1.84.0"
+  }
+}

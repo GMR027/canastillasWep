@@ -1,0 +1,48 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.informacion {
+  display: none;
+  position: absolute;
+
+  &-contenedor {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    z-index: 100;
+    @include m.flex-column;
+
+    .contenido {
+      background-color: v.$blanco;
+      padding: 2rem;
+      border-radius: 1rem;
+      @include m.contenedor;
+      @include m.tablet {
+        @include m.contenedor(70%);
+      }
+
+      h3 {
+        color: v.$naranja
+      }
+
+      p {
+        margin: 0
+      }
+
+      &-flex {
+        @include m.flex-column;
+        gap: 2rem;
+
+        img {
+          width: auto;
+          max-height: 20rem;
+        }
+
+        .detalleInstalacion {
+          width: auto;
+          max-height: 40rem;
+        }
+      }
+    }
+  }
+}

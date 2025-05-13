@@ -1,0 +1,45 @@
+@use 'variables' as v;
+
+@mixin telefono {
+  @media (min-width: v.$telefono) {
+    @content;
+  }
+}
+
+
+@mixin tablet {
+  @media (min-width: v.$tablet) {
+    @content;
+  }
+}
+
+@mixin deskop {
+  @media (min-width: v.$deskop) {
+    @content;
+  }
+}
+
+@mixin deskopXL {
+  @media (min-width: v.$deskopXL) {
+    @content;
+  }
+}
+
+@mixin grid($columnas: 1, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($columnas, 1fr);
+  gap: $gap;
+}
+
+@mixin contenedor($width: 90%) {
+  width: $width;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
