@@ -18,3 +18,10 @@ export function css(done) {
 export function dev() {
   watch('src/scss/**/*.scss', css)
 }
+
+
+export function build (done) {
+  css(done)
+}
+
+export default build;
