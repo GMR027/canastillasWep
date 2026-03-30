@@ -1,5 +1,6 @@
 <?php
 include __DIR__ . '/../includes/app.php';
+soloAdmin();
 use App\Reportes;
 $reportes = Reportes::mostrarTodos();
 
@@ -29,6 +30,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="navbar links-admin">
     <a class="button" href="/admin/reportes/crear.php">Reporte</a>
     <a class="button" href="/admin/pedidos/index.php">Pedido</a>
+    <a class="button hMovil" href="/admin/usuarios/index.php">Usuario</a>
+    <a class="button hMovil" href="/admin/productos/index.php">Productos</a>
     <a class="button" href="/cerrar-sesion.php">Cerrar Sesion</a>
   </div>
 </div>
@@ -70,15 +73,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Muestra el nombre del producto obtenido con JOIN a la tabla productos. -->
             <td class="info"><?php echo $reporte->nombre_producto; ?></td>
           <td><?php echo $reporte->cantidad; ?></td> 
-          <td class="hMovilTablas">
+          <td class="hMovilTablas acciones">
             <a class="button" href="/admin/reportes/detalleReportesAdmin.php?id=<?php echo $reporte->id; ?>">Reporte</a>
+            <a href="/admin/reportes/recibo.php?id=<?php echo $reporte->id; ?>" class="button">Imprimir Recibo</a>
           </td>
           <td class="hMovilTablas">
-            <a class="button" href="/admin/reportes/editarReportes.php?id=<?php echo $reporte->id; ?>">Editar</a>
-            <form action="" method="POST">
-              <input type="hidden" name="id" value="<?php echo $reporte->id; ?>">
-              <button type="submit" class="button eliminar">Eliminar</button>
-            </form>
+            <div class="acciones">
+                <a class="button editar" href="/admin/reportes/editarReportes.php?id=<?php echo $reporte->id; ?>">Editar</a>
+                <form action="" method="POST">
+                  <input type="hidden" name="id" value="<?php echo $reporte->id; ?>">
+                <button type="submit" class="button eliminar">Eliminar</button>
+              </form>
+            </div>
           </td>
         </tr>
       <?php endforeach; ?>

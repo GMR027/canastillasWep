@@ -31,7 +31,7 @@
         </svg>
       </a>
     </div>
-    <p>Todos los derechos reservados, Canastillas de la Baja 2025</p>
+    <p>Todos los derechos reservados, Canastillas de la Baja <?php echo date('Y'); ?></p>
   </footer>
 
   <script src="src/js/app.js"></script>

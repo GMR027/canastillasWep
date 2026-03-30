@@ -24,7 +24,7 @@ require 'includes/app.php';
         <a href="#cobertura">Cobertura</a>
         <a href="#novedades">Novedades</a>
         <a href="#contacto">Contacto</a>
-        <a href="login.php">Login</a>
+        <a href="/login..php">Login</a>
       </div>
       <div class="titulo">
         <img src="src/img/LogoWeb.png" alt="">

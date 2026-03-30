@@ -2,35 +2,21 @@
 require_once __DIR__ . '/../../includes/app.php';
 require_once __DIR__ . '/../../includes/app.php';
  soloAdmin();
-use App\Pedidos;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
+use App\Usuarios;
 
 $idValido = validarID($_GET['id']);
-$pedido = Pedidos::buscarID($idValido);
+$usuario = Usuarios::buscarID($idValido);
 
-$errores = Pedidos::getErrores();
+$errores = Usuarios::getErrores();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $args = $_POST;
-  $pedido->sincronizarCambios($args);
-  $errores = $pedido->validar();
-
-  $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-  if($_FILES['imagen']['tmp_name']) {
-    $manager = new ImageManager(Driver::class);
-    $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600, 'center');
-  }
+  $usuario->sincronizarCambios($args);
+  $errores = $usuario->validar();
 
   if(empty($errores)) {
-    if(isset($imagen)) {
-      $pedido->sincImage($nombreImagen);
-      if(!is_dir(CARPETA_IMAGEN)) {
-        mkdir(CARPETA_IMAGEN);
-      }
-      $imagen->save(CARPETA_IMAGEN . $nombreImagen);
-    }
-      $pedido->guardar();
+
+      $usuario->guardar();
   }
 }
 
@@ -58,11 +44,11 @@ template('headerHTML');
 </section>
 
 <section class="contenedor">
-  <h1>Editar Pedido</h1>
+  <h1>Editar Usuario</h1>
   <form action="" class="formulario" method="POST" enctype="multipart/form-data">
-    <?php include __DIR__ . '/../../templates/formularioPedidos.php'; ?>
+    <?php include __DIR__ . '/../../templates/formularioUsuarios.php'; ?>
     <div class="flex-center">
-      <button type="submit">Actualizar Pedido</button>
+      <button type="submit">Actualizar Usuario</button>
     </div>
   </form>
 </section>

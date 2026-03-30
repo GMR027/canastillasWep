@@ -1,5 +1,6 @@
 <?php
 require '../../includes/app.php';
+ soloAdmin();
 use App\Reportes;
 validarID($_GET['id']);
 $reporte = Reportes::buscarID($_GET['id']);

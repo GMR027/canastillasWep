@@ -52,6 +52,14 @@ button, .button {
   cursor: pointer;
   text-align: center;
 
+  &.editar {
+    background-color: #f57f17;
+  }
+
+  &.eliminar {
+    background-color: #ff3d00;
+  }
+
   @include m.tablet {
     width: 50%;
   }
@@ -133,6 +141,13 @@ li {
   }
 }
 
+.hMovil {
+  display: none;
+  @include m.tablet {
+    display: inline; 
+  }
+}
+
 
 .flex-center {
   display: flex;
@@ -144,4 +159,13 @@ li {
 
 .text-center {
   text-align: center;
+}
+
+.acciones {
+  @include m.flex-column {
+    .button {
+      width: 10rem;
+      margin: .5rem 0;
+    } 
+  }
 }

@@ -1,55 +1,26 @@
-
 <?php
-  require __DIR__ . '/../../includes/app.php';
-  soloAdmin();
-  use App\Pedidos;
+include __DIR__ . '/../../includes/app.php';
+soloProveedor();
+template('headerHTML');
+
+use App\Pedidos;
   $pedidos = Pedidos::mostrarTodos();
 
   $mensaje = (int) ($_GET['st'] ?? 0);
 
-  if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
-    $id = filter_var($id, FILTER_VALIDATE_INT);
-    $pedido = Pedidos::buscarID($id);
-    if($pedido) {
-      $pedido->eliminar();
-      header('Location: index.php?st=3');
-    } else {
-      header('Location: index.php');
-    }
-  }
-
-
-template('headerHTML');
-
 ?>
-
 <body>
 <div class="navbar-admin">
   <div class="titulo">
     <img src="/src/img/LogoWeb.png" alt="">
   </div>
   <div class="navbar links-admin">
-    <a class="button" href="crearPedidos.php">Crear</a>
-    <a class="button" href="/admin/index.php">Regresar</a>
-    <a class="button" href="cerrar-sesion.php">Cerrar Sesion</a>
+    <a class="button" href="/cerrar-sesion.php">Cerrar Sesion</a>
   </div>
 </div>
 
-<section class="mensajes contenedor">
-  <?php
-    if($mensaje === 1) {
-      echo '<p class="alerta exito">Pedido Creado Correctamente</p>';
-    } else if($mensaje === 2) {
-      echo '<p class="alerta actualizacion">Pedido Actualizado Correctamente</p>';
-    } else if($mensaje === 3) {
-      echo '<p class="alerta eliminacion">Pedido Eliminado Correctamente</p>';
-    }
-   ?>
-</section>
-
 <section class="contenedor">
-  <h1>Ultimos pedidos</h1>
+  <h1>Listado pedidos</h1>
   <table class="tablas">
     <thead>
       <tr>
@@ -58,9 +29,8 @@ template('headerHTML');
         <th>Num Pedido</th>
         <th class="info">Producto</th>
         <th>Cantidad</th>
-        <th class="hMovilTablas">Estatus</th>
-        <th class="hMovilTablas">Imagen</th>
-        <th class="hMovilTablas">Acciones</th>
+        <th class="hMovilTablas">Estatus Entrega</th>
+        <th class="hMovilTablas">Imagen de pedido</th>
       </tr>
     </thead>
     <tbody>
@@ -84,17 +54,8 @@ template('headerHTML');
           ?>
           <span class="indicadores <?php echo $info['clase']; ?>"><?php echo $info['texto']; ?></span>
         </td>
-        <td class="foto-entrega-container">
+        <td class="foto-entrega-container hMovilTablas">
           <img src="/public/image/<?php echo $pedido->imagen; ?>" alt="Foto de pedido" class="foto-entrega">
-        </td>
-        <td class="hMovilTablas">
-          <div class="acciones">
-            <a class="button editar" href="editarPedidos.php?id=<?php echo $pedido->id; ?>">Editar</a>
-            <form action="" method="POST">
-              <input type="hidden" name="id" value="<?php echo $pedido->id; ?>">
-              <button type="submit" class="button eliminar">Eliminar</button>
-            </form>
-          </div>
         </td>
       </tr>
       <?php endforeach; ?>

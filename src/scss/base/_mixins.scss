@@ -38,6 +38,7 @@
 }
 
 @mixin flex-column($justify: center, $align: center) {
+  @content;
   display: flex;
   flex-direction: column;
   align-items: $align;

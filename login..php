@@ -1,15 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canastillas de la Baja</title>
-  <link rel="stylesheet" href="/build/css/app.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<?php
+include './includes/app.php';
+$db = database();
+$errores = [];
 
-</head>
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $correo = $db->escape_string($_POST['correo']);
+  $contrasena = $_POST['contrasena'];
+
+  if(!$correo) {
+    $errores[] = 'El correo es obligatorio';
+  }
+  if(!$contrasena) {
+    $errores[] = 'La contraseña es obligatoria';
+  }
+
+  if(empty($errores)) {
+    $query = "SELECT * FROM usuarios WHERE correo = '$correo'";
+    $resultado = $db->query($query);
+    if($resultado->num_rows) {
+      $correoDB = $resultado->fetch_assoc();
+      $autorizado = password_verify($contrasena, $correoDB['contrasena']);
+
+      if($autorizado) {
+        session_start();
+        $_SESSION['id'] = $correoDB['id'];
+        $_SESSION['nombre'] = $correoDB['nombre'];
+        $_SESSION['rol'] = $correoDB['rol'];
+        $_SESSION['empresa'] = $correoDB['empresa'];
+        $_SESSION['login'] = true;
+        
+        if((int) $correoDB['rol'] === 1) {
+          header('Location: /admin/index.php');
+        } elseif((int) $correoDB['rol'] === 2) {
+          header('Location: /public/cliente/index.php');
+        } else {
+          header('Location: /public/proveedor/index.php');
+        }
+        exit;
+      } else {
+        $errores[] = 'Contraseña incorrecta';
+      }
+    } else {
+      $errores[] = 'El correo no existe'; 
+  }
+}
+}
+
+template('headerHTML');
+?>
+
 <body>
 <div class="navbar-admin">
   <div class="titulo">
@@ -20,15 +59,23 @@
   </div>
 </div>
 
+<section class="mensajesError contenedor">
+  <?php foreach($errores as $error) :?>
+    <div class="error">
+      <?php echo $error;?>
+    </div>
+  <?php endforeach; ?>
+</section>
+
 <section class="contenedor">
   <h1>Login</h1>
   <div class="login">
   <form class="formulario" action="" method="post">
-    <label for="username">Usuario:</label>
-    <input type="text" id="username" name="username" required>
+    <label for="correo">Correo:</label>
+    <input type="text" id="correo" name="correo">
 
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password" required>
+    <label for="contrasena">Contraseña:</label>
+    <input type="password" id="contrasena" name="contrasena">
 
     <div class="flex-center">
       <button type="submit">Iniciar Sesión</button>

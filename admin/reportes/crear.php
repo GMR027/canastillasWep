@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/app.php';
+ soloAdmin();
 use App\Reportes;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;

@@ -1,23 +1,20 @@
 <?php
 require '../../includes/app.php';
+ soloCliente();
 use App\Reportes;
 validarID($_GET['id']);
 $reporte = Reportes::buscarID($_GET['id']);
+// Verifica que el reporte pertenezca al cliente en sesion.
+if(!$reporte || (int) $reporte->cliente !== (int) $_SESSION['id']) {
+  header('Location: /public/cliente/index.php');
+  exit;
+}
+
+
+template('headerHTML');
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canastillas de la Baja</title>
-  <link rel="stylesheet" href="/build/css/app.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-</head>
 <body>
 <div class="navbar-admin">
   <div class="titulo">
@@ -33,10 +30,7 @@ $reporte = Reportes::buscarID($_GET['id']);
   <h1>Detalle de entrega</h1>
   <P>Nombre de cliente: <?php echo $reporte->nombre_cliente; ?></P>
   <p>Contacto: <?php echo $reporte->telefono; ?></p>
-
-  <!-- Inicio de iteracion de entregas -->
-  <p class="hTabletTablas">Fecha: <?php echo $reporte->fecha; ?></p>
-  <p class="hMovilTablas">Lugar de entrega: <?php echo $reporte->ubicacion_nombre; ?></p>
+  <p class="hMovilTablas">Lugar de entrega: <?php echo $reporte->ubicacion_nombre; ?>, <?php echo $reporte->lugar; ?></p>
   <table class="tablas">
     <thead>
       <tr>

@@ -38,3 +38,37 @@ function validarID($id) {
     }
     return $id;
 }
+
+function iniciarSesion() : bool {
+  session_start();
+
+  if(!isset($_SESSION['login'])) {
+    header('Location: /login..php');
+    exit;
+  }
+  return true;
+}
+
+function soloAdmin() : void {
+  iniciarSesion();
+  if((int) $_SESSION['rol'] !== 1) {
+    header('Location: /public/cliente/index.php');
+    exit;
+  }
+}
+
+function soloCliente() : void {
+  iniciarSesion();
+  if((int) $_SESSION['rol'] !== 2) {
+    header('Location: /login..php');
+    exit;
+  }
+}
+
+function soloProveedor() : void {
+  iniciarSesion();
+  if((int) $_SESSION['rol'] !== 3) {
+    header('Location: /login..php');
+    exit;
+  }
+}

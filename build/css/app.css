@@ -359,6 +359,12 @@ button, .button {
   cursor: pointer;
   text-align: center;
 }
+button.editar, .button.editar {
+  background-color: #f57f17;
+}
+button.eliminar, .button.eliminar {
+  background-color: #ff3d00;
+}
 @media (min-width: 768px) {
   button, .button {
     width: 50%;
@@ -438,6 +444,15 @@ li svg {
   }
 }
 
+.hMovil {
+  display: none;
+}
+@media (min-width: 768px) {
+  .hMovil {
+    display: inline;
+  }
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -447,6 +462,17 @@ li svg {
 
 .text-center {
   text-align: center;
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.acciones .button {
+  width: 10rem;
+  margin: 0.5rem 0;
 }
 
 .video {
@@ -952,4 +978,131 @@ li svg {
   border-radius: 1rem;
   padding: 1rem;
   margin: 1rem 0;
+}
+
+.contenedor-Impresion {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.recibo {
+  padding: 2rem;
+  border: dashed 5px #424242;
+}
+.recibo-contenido {
+  height: 50vh;
+}
+.recibo .descripcion {
+  margin: 4rem 0;
+}
+.recibo .footer-recibo {
+  margin-top: 8rem;
+}
+.recibo .footer-recibo .recibo-firmas {
+  margin-top: 4rem;
+}
+
+.print-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.print-header img {
+  height: 5rem;
+}
+.print-header h1, .print-header p {
+  margin: 0;
+}
+
+.footer-recibo {
+  margin-top: 1rem;
+}
+
+.recibo-notas {
+  margin-bottom: 1.5rem;
+}
+.recibo-notas span {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.linea-escritura {
+  border-bottom: 1px solid #000;
+  width: 100%;
+  margin-bottom: 0.6rem;
+  height: 1.4rem;
+}
+
+.recibo-firmas {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.5rem;
+}
+
+.firma {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+}
+.firma span {
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.linea-firma {
+  border-bottom: 1px solid #000;
+  width: 100%;
+}
+
+@media print {
+  @page {
+    size: letter landscape;
+    margin: 0.5cm;
+  }
+  body {
+    margin: 0;
+  }
+  .navbar-admin,
+  .button,
+  .mensajes {
+    display: none !important;
+  }
+  .contenedor-Impresion {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+  }
+  .recibo {
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    border: dashed 2px #424242;
+    padding: 1cm;
+    page-break-inside: avoid;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .recibo-contenido {
+    flex: 1;
+  }
+  .footer-recibo {
+    flex-shrink: 0;
+    margin-top: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table th, table td {
+    border: 1px solid #000;
+    padding: 4px 8px;
+    font-size: 11pt;
+  }
 }

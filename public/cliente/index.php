@@ -1,26 +1,15 @@
 <?php
 include __DIR__ . '/../../includes/app.php';
+ soloCliente();
 use App\Reportes;
-$reportes = Reportes::mostrarTodos();
+$reportes = Reportes::mostrarPorCliente($_SESSION['id']);
 
 // Lee el parametro st de la URL y lo convierte a entero para comparar con ===.
 $mensaje = (int) ($_GET['st'] ?? 0);
 
-
+template('headerHTML');
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canastillas de la Baja</title>
-  <link rel="stylesheet" href="/build/css/app.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-</head>
 <body>
 <div class="navbar-admin">
   <div class="titulo">
@@ -33,9 +22,8 @@ $mensaje = (int) ($_GET['st'] ?? 0);
 
 <section class="contenedor">
   <h1>Listado de entregas</h1>
-  <P>Nombre de cliente: Juan Pérez</P>
-  <p>Contacto: juan.perez@example.com</p>
-  <p class="hTabletTablas">Fecha: 10/marzo/2026</p>
+  <P>Nombre de cliente: <?php echo escaparValores($_SESSION['nombre']); ?></P>
+  <p>Contacto: <?php echo escaparValores(!empty($reportes) ? $reportes[0]->telefono : ''); ?></p> <!-- Muestra el telefono del primer reporte si existe, de lo contrario muestra una cadena vacia. -->
   <table class="tablas">
     <thead>
       <tr>

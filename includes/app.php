@@ -12,3 +12,9 @@ Reportes::setDB($db);
 
 use App\Pedidos;
 Pedidos::setDB($db);
+
+use App\Usuarios;
+Usuarios::setDB($db);
+
+use App\Productos;
+Productos::setDB($db);
