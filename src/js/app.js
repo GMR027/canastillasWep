@@ -7,15 +7,14 @@ function scrollNav() {
   const linksNavegacion = document.querySelectorAll('.navbar a')
   linksNavegacion.forEach(link => {
     link.addEventListener('click', event => {
+      const href = event.target.getAttribute('href')
+      if (!href || !href.startsWith('#')) return
+
       event.preventDefault()
-      console.log(event.target); //<a href="#cobertura">
-      console.log(event.target.getAttribute('href')); //#cobertura
-
-      const seccionSeleccionada = event.target.getAttribute('href') //lo mismo que la linea 12
-      const seccionApuntada = document.querySelector(seccionSeleccionada) //apuntar al elemento
-      console.log(seccionApuntada); //<section id="cobertura" class="cobertura">
-
-      seccionApuntada.scrollIntoView({behavior: 'smooth'})
+      const seccionApuntada = document.querySelector(href)
+      if (seccionApuntada) {
+        seccionApuntada.scrollIntoView({behavior: 'smooth'})
+      }
     })
   })
 }

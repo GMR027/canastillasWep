@@ -1,0 +1,41 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.navbar-admin {
+  background-color: v.$gris;
+   padding: 2rem;
+  @include m.flex-column;
+  @include m.tablet {
+    @include m.flex-row(space-between, center);
+    padding: 1rem;
+  }
+ 
+
+
+  .titulo {
+    margin-bottom: 2rem;
+    img {
+      width: 20rem;
+    }
+  }
+
+  .links {
+    
+    a {
+      color: v.$blanco;
+      cursor: pointer;
+      padding: 1rem;
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: solid 2px v.$gris;
+      width: 80%;
+      text-align: center;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: v.$negroAzul;
+      }
+    }
+  }
+}

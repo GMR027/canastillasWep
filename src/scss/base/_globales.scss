@@ -42,10 +42,11 @@ a {
 }
 
 button, .button {
-  width: 80%;
+  width: auto;
   border: none;
-  padding: 1rem 0;
+  padding: 1rem;
   border-radius: 2rem;
+  margin: 0 1rem;
   background-color: v.$negroClaro;
   color: v.$blanco;
   cursor: pointer;
@@ -61,6 +62,15 @@ button, .button {
    }
 
 }
+
+.width-50 {
+  @include m.tablet {
+    .button {
+      width: 20%;
+    }
+  }
+}
+
 
 img {
   max-width: 100%;
@@ -99,4 +109,39 @@ li {
     width: 2rem;
     height: 2rem;
   }
+}
+
+.contenedor {
+  width: 90%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+
+.hMovilTablas {
+  display: none;
+  @include m.tablet {
+    display: table-cell; 
+  }
+}
+
+
+.hTabletTablas {
+  display: table-cell;
+  @include m.tablet {
+    display: none; 
+  }
+}
+
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+
+.text-center {
+  text-align: center;
 }

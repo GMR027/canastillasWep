@@ -1,0 +1,44 @@
+@use 'base/mixins' as m;
+
+.mensajesError {
+  .error {
+    background-color: #d32f2f;
+    text-align: center;
+    color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+}
+
+.mensajes {
+    .alerta {
+    &.exito {
+      background-color: #4caf50;
+      text-align: center;
+      color: white;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    &.actualizacion {
+      background-color: #2196f3;
+      text-align: center;
+      color: white;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    &.eliminacion {
+      background-color: #f44336;
+      text-align: center;
+      color: white;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+  }
+}

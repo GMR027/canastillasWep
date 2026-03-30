@@ -349,10 +349,11 @@ a {
 }
 
 button, .button {
-  width: 80%;
+  width: auto;
   border: none;
-  padding: 1rem 0;
+  padding: 1rem;
   border-radius: 2rem;
+  margin: 0 1rem;
   background-color: #414141;
   color: #ffffff;
   cursor: pointer;
@@ -366,6 +367,12 @@ button, .button {
 button:hover, .button:hover {
   background-color: #aaaaaa;
   color: #e3e3e3;
+}
+
+@media (min-width: 768px) {
+  .width-50 .button {
+    width: 20%;
+  }
 }
 
 img {
@@ -407,10 +414,45 @@ li svg {
   height: 2rem;
 }
 
+.contenedor {
+  width: 90%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.hMovilTablas {
+  display: none;
+}
+@media (min-width: 768px) {
+  .hMovilTablas {
+    display: table-cell;
+  }
+}
+
+.hTabletTablas {
+  display: table-cell;
+}
+@media (min-width: 768px) {
+  .hTabletTablas {
+    display: none;
+  }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .video {
   position: relative;
   min-height: 20rem;
-  max-height: 40rem;
+  max-height: 45rem;
   overflow: hidden;
 }
 .video .overlay {
@@ -716,4 +758,198 @@ li svg {
 .footer-iconos {
   display: flex;
   justify-content: center;
+}
+
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navbar-admin {
+  background-color: #aaaaaa;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .navbar-admin {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+}
+.navbar-admin .titulo {
+  margin-bottom: 2rem;
+}
+.navbar-admin .titulo img {
+  width: 20rem;
+}
+.navbar-admin .links a {
+  color: #ffffff;
+  cursor: pointer;
+  padding: 1rem;
+  backdrop-filter: blur(20px);
+  border-radius: 2rem;
+  border: solid 2px #aaaaaa;
+  width: 80%;
+  text-align: center;
+  text-transform: uppercase;
+}
+.navbar-admin .links a:hover {
+  background-color: #1e1f26;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.formulario {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .formulario {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 1200px) {
+  .formulario {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
+.formulario input, .formulario select, .formulario textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: solid 2px #aaaaaa;
+  margin: 1rem 0;
+}
+.formulario button {
+  padding: 0.75rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+.formulario button:hover {
+  background-color: #0056b3;
+}
+
+.tablas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+.tablas .info {
+  max-width: 70rem;
+  word-wrap: break-word;
+}
+@media (min-width: 768px) {
+  .tablas .info {
+    max-width: 40rem;
+  }
+}
+
+.tablas th, .tablas td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.tablas th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.foto-entrega-container img {
+  width: auto;
+  max-height: 10rem;
+}
+
+.indicadores {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: bold;
+}
+.indicadores.pendiente {
+  background-color: #ff3d00;
+}
+.indicadores.en-transito {
+  background-color: #ff8f00;
+}
+.indicadores.entregado {
+  background-color: #03a9f4;
+}
+.indicadores.cancelado {
+  background-color: #673ab7;
+}
+.indicadores.pagado {
+  background-color: #1b5e20;
+}
+
+.foto-entrega-detalle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.foto-entrega-detalle-container img {
+  width: auto;
+  max-width: 100%;
+  max-height: 60rem;
+}
+
+.botones-detalle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 5rem 0;
+}
+
+.mensajesError .error {
+  background-color: #d32f2f;
+  text-align: center;
+  color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.mensajes .alerta.exito {
+  background-color: #4caf50;
+  text-align: center;
+  color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.mensajes .alerta.actualizacion {
+  background-color: #2196f3;
+  text-align: center;
+  color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.mensajes .alerta.eliminacion {
+  background-color: #f44336;
+  text-align: center;
+  color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
 }

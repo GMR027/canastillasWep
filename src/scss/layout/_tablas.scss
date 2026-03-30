@@ -1,0 +1,59 @@
+@use 'base/mixins' as m;
+
+.tablas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  .info {
+    max-width: 70rem;
+    word-wrap: break-word;
+    @include m.tablet {
+      max-width: 40rem;
+    }
+  }
+}
+
+.tablas th, .tablas td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.tablas th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.foto-entrega-container {
+  img {
+    width: auto;
+    max-height: 10rem;
+  }
+}
+
+.indicadores{
+  padding: 1rem;
+  border-radius: .5rem;
+  
+  color: white;
+  font-weight: bold;
+  &.pendiente {
+    background-color: #ff3d00;
+  }
+
+  &.en-transito {
+    background-color: #ff8f00;
+  }
+
+  &.entregado {
+    background-color: #03a9f4;
+  }
+
+  &.cancelado {
+    background-color: #673ab7;
+  }
+
+  &.pagado {
+    background-color: #1b5e20;
+  }
+}

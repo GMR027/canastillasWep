@@ -15,13 +15,13 @@ export function css(done) {
 }
 
 
-export function dev() {
+export function build() {
   watch('src/scss/**/*.scss', css)
 }
 
 
-export function build (done) {
-  css(done)
-}
+// export function build (done) {
+//   css(done)
+// }
 
 export default build;

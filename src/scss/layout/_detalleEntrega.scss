@@ -1,0 +1,16 @@
+@use 'base/mixins' as m;
+
+.foto-entrega-detalle-container {
+  @include m.flex-column;
+  margin-top: 2rem;
+  img {
+    width: auto;
+    max-width: 100%;
+    max-height: 60rem;
+  }
+}
+
+.botones-detalle {
+  @include m.flex-row(center, center);
+  margin: 5rem 0;
+}
