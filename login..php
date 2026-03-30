@@ -4,34 +4,34 @@ $db = database();
 $errores = [];
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $correo = $db->escape_string($_POST['correo']);
+  $telefono = $db->escape_string($_POST['telefono']);
   $contrasena = $_POST['contrasena'];
 
-  if(!$correo) {
-    $errores[] = 'El correo es obligatorio';
+  if(!$telefono) {
+    $errores[] = 'El teléfono es obligatorio';
   }
   if(!$contrasena) {
     $errores[] = 'La contraseña es obligatoria';
   }
 
   if(empty($errores)) {
-    $query = "SELECT * FROM usuarios WHERE correo = '$correo'";
+    $query = "SELECT * FROM usuarios WHERE telefono = '$telefono'";
     $resultado = $db->query($query);
     if($resultado->num_rows) {
-      $correoDB = $resultado->fetch_assoc();
-      $autorizado = password_verify($contrasena, $correoDB['contrasena']);
+      $telefonoDB = $resultado->fetch_assoc();
+      $autorizado = password_verify($contrasena, $telefonoDB['contrasena']);
 
       if($autorizado) {
         session_start();
-        $_SESSION['id'] = $correoDB['id'];
-        $_SESSION['nombre'] = $correoDB['nombre'];
-        $_SESSION['rol'] = $correoDB['rol'];
-        $_SESSION['empresa'] = $correoDB['empresa'];
+        $_SESSION['id'] = $telefonoDB['id'];
+        $_SESSION['nombre'] = $telefonoDB['nombre'];
+        $_SESSION['rol'] = $telefonoDB['rol'];
+        $_SESSION['empresa'] = $telefonoDB['empresa'];
         $_SESSION['login'] = true;
         
-        if((int) $correoDB['rol'] === 1) {
+        if((int) $telefonoDB['rol'] === 1) {
           header('Location: /admin/index.php');
-        } elseif((int) $correoDB['rol'] === 2) {
+        } elseif((int) $telefonoDB['rol'] === 2) {
           header('Location: /public/cliente/index.php');
         } else {
           header('Location: /public/proveedor/index.php');
@@ -41,7 +41,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'Contraseña incorrecta';
       }
     } else {
-      $errores[] = 'El correo no existe'; 
+      $errores[] = 'El teléfono no existe'; 
   }
 }
 }
@@ -71,8 +71,8 @@ template('headerHTML');
   <h1>Login</h1>
   <div class="login">
   <form class="formulario" action="" method="post">
-    <label for="correo">Correo:</label>
-    <input type="text" id="correo" name="correo">
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" name="telefono">
 
     <label for="contrasena">Contraseña:</label>
     <input type="password" id="contrasena" name="contrasena">

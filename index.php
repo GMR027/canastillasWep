@@ -242,6 +242,13 @@ require 'includes/app.php';
     <img src="src/img/novedades.jpg" alt="imagen-novedades">
   </section>
 
+  <section class="entregas">
+    <h2>Ultimas entregas</h2>
+    <?php
+      template('entregas', ['limite' => 8]);
+    ?>
+  </section>
+
  <?php
  template('footer');
 ?>

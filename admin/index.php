@@ -56,10 +56,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <th class="hMovilTablas">ID</th>
         <th class="hMovilTablas">Fecha</th>
         <th>Cliente</th>
-        <th class="info">Producto</th>
-        <th>Cantidad</th>
-        <th class="hMovilTablas">Reporte</th>
-        <th class="hMovilTablas">Acciones</th>
+        <th class="info hMovilTablas">Producto</th>
+        <th class="hMovilTablas">Cantidad</th>
+        <th>Reporte</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -71,13 +71,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Muestra el nombre del cliente obtenido con JOIN a la tabla usuarios. -->
             <td class="info"><?php echo $reporte->nombre_cliente; ?></td>
             <!-- Muestra el nombre del producto obtenido con JOIN a la tabla productos. -->
-            <td class="info"><?php echo $reporte->nombre_producto; ?></td>
-          <td><?php echo $reporte->cantidad; ?></td> 
+            <td class="info hMovilTablas"><?php echo $reporte->nombre_producto; ?></td>
+          <td class="hMovilTablas"><?php echo $reporte->cantidad; ?></td> 
           <td class="hMovilTablas acciones">
             <a class="button" href="/admin/reportes/detalleReportesAdmin.php?id=<?php echo $reporte->id; ?>">Reporte</a>
             <a href="/admin/reportes/recibo.php?id=<?php echo $reporte->id; ?>" class="button">Imprimir Recibo</a>
           </td>
-          <td class="hMovilTablas">
+          <td>
             <div class="acciones">
                 <a class="button editar" href="/admin/reportes/editarReportes.php?id=<?php echo $reporte->id; ?>">Editar</a>
                 <form action="" method="POST">

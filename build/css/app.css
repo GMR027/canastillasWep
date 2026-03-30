@@ -1106,3 +1106,20 @@ li svg {
     font-size: 11pt;
   }
 }
+.contenedor-entregas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.contenedor-entregas .entrega {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.contenedor-entregas .entrega .informacion-entrega {
+  text-transform: uppercase;
+}
+.contenedor-entregas .entrega .informacion-entrega p {
+  margin: 0;
+}

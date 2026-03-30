@@ -84,7 +84,7 @@ template('headerHTML');
           ?>
           <span class="indicadores <?php echo $info['clase']; ?>"><?php echo $info['texto']; ?></span>
         </td>
-        <td class="foto-entrega-container">
+        <td class="foto-entrega-container hMovilTablas">
           <img src="/public/image/<?php echo $pedido->imagen; ?>" alt="Foto de pedido" class="foto-entrega">
         </td>
         <td class="hMovilTablas">

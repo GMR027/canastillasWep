@@ -1,0 +1,16 @@
+@use 'base/mixins' as m;
+
+.contenedor-entregas {
+  @include m.grid(4, 1rem);
+
+  .entrega {
+    @include m.flex-column(center, center);
+
+    .informacion-entrega {
+      text-transform: uppercase;
+      p {
+        margin: 0;
+      }
+    }
+  }
+}

@@ -7,7 +7,8 @@ define('CARPETA_IMAGEN', __DIR__ . '/../public/image/');
 //var_dump(CARPETA_IMAGEN);
 //var_dump(TEMPLATES_URL);
 
-function template(string $nombre) {
+function template(string $nombre, array $datos = []) {
+    extract($datos);
     include TEMPLATES_URL . "/$nombre.php";
 }
 

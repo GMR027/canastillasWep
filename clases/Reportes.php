@@ -245,6 +245,25 @@ class Reportes {
     return $resultado;
   }
 
+  public static function mostrarEntregasLimitado($limite) {
+    $limite = intval($limite); // Convertimos a entero para evitar SQL injection, ya que este valor viene de $_GET['limite'].
+    $query = "SELECT reportes.*, 
+              usuarios.nombre AS nombre_cliente,
+              usuarios.telefono AS telefono,
+              usuarios.empresa AS nombre_empresa,
+              productos.nombre AS nombre_producto,
+              productos.descripcion AS descripcion_producto,
+              ubicacion.nombre AS ubicacion_nombre
+              FROM reportes 
+              LEFT JOIN usuarios ON reportes.cliente = usuarios.id 
+              LEFT JOIN productos ON reportes.producto = productos.id
+              LEFT JOIN ubicacion ON reportes.ubicacion = ubicacion.id
+              ORDER BY reportes.id DESC LIMIT $limite";
+    $resultado = self::consultaSQL($query);
+    return $resultado;
+  }
+
+
   public static function mostrarPorCliente($clienteId) {
     $clienteId = intval($clienteId);
     $query = "SELECT reportes.*, 

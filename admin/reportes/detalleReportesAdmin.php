@@ -34,9 +34,6 @@ $reporte = Reportes::buscarID($_GET['id']);
   <h1>Detalle de entrega</h1>
   <P>Nombre de cliente: <?php echo $reporte->nombre_cliente; ?></P>
   <p>Contacto: <?php echo $reporte->telefono; ?></p>
-
-  <!-- Inicio de iteracion de entregas -->
-  <p class="hTabletTablas">Fecha: <?php echo $reporte->fecha; ?></p>
   <p class="hMovilTablas">Lugar de entrega: <?php echo $reporte->ubicacion_nombre; ?></p>
   <table class="tablas">
     <thead>
@@ -56,6 +53,10 @@ $reporte = Reportes::buscarID($_GET['id']);
     </tbody>
   </table>
 </section>
+<section class="contenedor">
+  <p><?php echo $reporte->descripcion_producto; ?></p>
+</section>
+
 <section class="contenedor">
   <h2>Foto de entrega</h2>
   <div class="foto-entrega-detalle-container">

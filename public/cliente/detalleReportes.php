@@ -50,6 +50,9 @@ template('headerHTML');
   </table>
 </section>
 <section class="contenedor">
+  <p><?php echo $reporte->descripcion_producto; ?></p>
+</section>
+<section class="contenedor">
   <h2>Foto de entrega</h2>
   <div class="foto-entrega-detalle-container">
     <img src="/public/image/<?php echo $reporte->imagen; ?>" alt="Foto de entrega" class="foto-entrega">
