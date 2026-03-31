@@ -367,7 +367,7 @@ button.eliminar, .button.eliminar {
 }
 @media (min-width: 768px) {
   button, .button {
-    width: 50%;
+    width: auto;
   }
 }
 button:hover, .button:hover {
@@ -1138,4 +1138,35 @@ li svg {
 }
 .contenedor-entregas .entrega .informacion-entrega p {
   margin: 0;
+}
+
+.filtros {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.filtros select.filtro-grupo {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236497b1' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-color: #ffffff;
+  border: 2px solid #414141;
+  border-radius: 0.5rem;
+  padding: 0.8rem 3.5rem 0.8rem 1.2rem;
+  font-size: 1.4rem;
+  color: #414141;
+  cursor: pointer;
+  min-width: 18rem;
+  transition: border-color 0.2s;
+}
+.filtros select.filtro-grupo:hover {
+  border-color: #aaaaaa;
+}
+.filtros select.filtro-grupo:focus {
+  outline: none;
+  border-color: #03396c;
 }

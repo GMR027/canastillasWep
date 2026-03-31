@@ -225,14 +225,8 @@ class Reportes {
     return $objeto;
   }
 
-  public static function mostrarTodos() {
-    // Selecciona todos los campos del reporte y ademas nombres legibles de cliente y producto.
-    // usuarios.nombre se expone como nombre_cliente.
-    // productos.nombre se expone como nombre_producto.
-    // Se usan LEFT JOIN para no perder reportes si falta relacion en usuarios o productos.
-    // 'ubicacion' en reportes es FK a la tabla 'ubicacion'.
-    // Se incluye JOIN para traer el nombre de la ubicacion.
-    $query = "SELECT reportes.*, 
+  public static function mostrarTodos($anio = null, $clienteId = null, $ubicacionId = null) { //Agregamos parámetros opcionales para filtrar por año, cliente o ubicación.
+       $query = "SELECT reportes.*, 
               usuarios.nombre AS nombre_cliente,
               usuarios.telefono AS telefono,
               usuarios.empresa AS nombre_empresa,
@@ -243,8 +237,33 @@ class Reportes {
               LEFT JOIN usuarios ON reportes.cliente = usuarios.id 
               LEFT JOIN productos ON reportes.producto = productos.id
               LEFT JOIN ubicacion ON reportes.ubicacion = ubicacion.id";
-    $resultado = self::consultaSQL($query);
-    return $resultado;
+
+    // Como no hay WHERE fijo, usamos un array y luego los unimos
+    $condiciones = []; //Array para guardar las condiciones de filtrado.
+
+    if($anio) { //Si se especifica un año, filtramos por ese año usando la función YEAR() de SQL.
+        $anio = intval($anio); //Convertimos a entero para evitar SQL injection, ya que este valor viene de $_GET['anio'].
+        $condiciones[] = "YEAR(reportes.fecha) = $anio"; //Agregamos una condición al array para filtrar por año.
+    }
+
+    if($clienteId) { //Si se especifica un cliente, filtramos por ese cliente.
+        $clienteId = intval($clienteId); //Convertimos a entero para evitar SQL injection, ya que este valor viene de $_GET['cliente'].
+        $condiciones[] = "reportes.cliente = $clienteId"; //Agregamos una condición al array para filtrar por cliente.
+    }
+
+    if($ubicacionId) { //Si se especifica una ubicación, filtramos por esa ubicación.
+        $ubicacionId = intval($ubicacionId); //Convertimos a entero para evitar SQL injection, ya que este valor viene de $_GET['ubicacion'].
+        $condiciones[] = "reportes.ubicacion = $ubicacionId"; //Agregamos una condición al array para filtrar por ubicación.
+    }
+
+    // Solo agrega WHERE si hay al menos una condicion
+    if(!empty($condiciones)) { //Si hay condiciones, las unimos con AND y las agregamos a la consulta.
+        $query .= " WHERE " . implode(" AND ", $condiciones); //implode une las condiciones con " AND " para que todas se apliquen al mismo tiempo.
+    }
+
+    $query .= " ORDER BY reportes.fecha DESC"; //Agregamos ordenamiento por fecha descendente para mostrar los reportes más recientes primero.
+
+    return self::consultaSQL($query); //Ejecutamos la consulta y devolvemos los resultados como objetos Reportes.
   }
 
   public static function mostrarEntregasLimitado($limite) {
@@ -260,13 +279,13 @@ class Reportes {
               LEFT JOIN usuarios ON reportes.cliente = usuarios.id 
               LEFT JOIN productos ON reportes.producto = productos.id
               LEFT JOIN ubicacion ON reportes.ubicacion = ubicacion.id
-              ORDER BY reportes.id DESC LIMIT $limite";
+              ORDER BY reportes.fecha DESC LIMIT $limite"; //Agregamos LIMIT para restringir el número de resultados y ordenamos por fecha descendente para mostrar los más recientes primero.
     $resultado = self::consultaSQL($query);
     return $resultado;
   }
 
 
-  public static function mostrarPorCliente($clienteId) {
+  public static function mostrarPorCliente($clienteId, $anio = null, $ubicacionId = null) {
     $clienteId = intval($clienteId);
     $query = "SELECT reportes.*, 
               usuarios.nombre AS nombre_cliente,
@@ -279,7 +298,20 @@ class Reportes {
               LEFT JOIN usuarios ON reportes.cliente = usuarios.id 
               LEFT JOIN productos ON reportes.producto = productos.id
               LEFT JOIN ubicacion ON reportes.ubicacion = ubicacion.id
-              WHERE reportes.cliente = $clienteId";
+              WHERE reportes.cliente = $clienteId"; //Agregamos WHERE para filtrar por cliente.
+
+    if($anio) {
+      $anio = intval($anio);
+      $query .= " AND YEAR(reportes.fecha) = $anio"; //Filtra por año si se especifica.
+    }
+
+    if($ubicacionId) {
+      $ubicacionId = intval($ubicacionId);
+      $query .= " AND reportes.ubicacion = $ubicacionId"; //Filtra por ubicación si se especifica.
+    }
+
+    $query .= " ORDER BY reportes.fecha DESC"; //Ordenamos por fecha descendente para mostrar los más recientes primero.
+
     return self::consultaSQL($query);
   }
 

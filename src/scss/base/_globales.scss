@@ -61,7 +61,7 @@ button, .button {
   }
 
   @include m.tablet {
-    width: 50%;
+    width: auto;
   }
 
    &:hover {

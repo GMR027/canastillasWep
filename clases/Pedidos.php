@@ -184,9 +184,36 @@ class Pedidos {
     return $objeto;
   }
 
-  public static function mostrarTodos() {
+  public static function mostrarTodos($anio = null, $estatus = null, $diasTransito = null) {
     // Selecciona todos los campos del pedido.
-    $query = "SELECT * FROM pedidos";
+    $query = "SELECT * FROM pedidos WHERE 1=1"; // Ordenamos por fecha descendente para mostrar los más recientes primero. es un truco para facilitar la concatenación de condiciones con AND sin preocuparnos por si es la primera condición o no.
+
+    if($anio) {
+      $anio = intval($anio);
+      $query .= " AND YEAR(pedidos.fecha) = $anio"; //Filtra por año si se especifica.
+    }
+
+    if($estatus) {
+      $estatus = intval($estatus);
+      $query .= " AND pedidos.estatus = $estatus"; //Filtra por estatus si se especifica.
+    }
+
+
+    if($diasTransito) {
+      $diasTransito = intval($diasTransito);
+      // El valor 1, 2 o 3 representa un rango de días, no un número exacto.
+      // DATEDIFF(fechaRecibo, fechaEmbarque) calcula los días entre las dos fechas.
+      if($diasTransito === 1) {
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 0 AND 7"; //Datediff devuelve la cantidad de días entre fechaRecibo y fechaEmbarque. Si el resultado está entre 0 y 7, se considera tránsito rápido.
+      } elseif($diasTransito === 2) {
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 8 AND 15";
+      } elseif($diasTransito === 3) {
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) > 15";
+      }
+    }
+
+    $query .= " ORDER BY pedidos.fecha DESC"; //Ordenamos por fecha descendente para mostrar los más recientes primero.
+
     $resultado = self::consultaSQL($query);
     return $resultado;
   }

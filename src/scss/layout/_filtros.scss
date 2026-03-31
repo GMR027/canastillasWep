@@ -1,0 +1,36 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.filtros {
+  padding: 2rem 0;
+  @include m.flex-row;
+    select.filtro-grupo {
+        // Elimina la flecha gris nativa del navegador
+        appearance: none;
+        -webkit-appearance: none;
+
+        // Flecha personalizada con SVG inline como fondo
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236497b1' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1.2rem center;
+        background-color: v.$blanco;
+
+        border: 2px solid v.$negroClaro;
+        border-radius: .5rem;
+        padding: .8rem 3.5rem .8rem 1.2rem;
+        font-size: 1.4rem;
+        color: v.$negroClaro;
+        cursor: pointer;
+        min-width: 18rem;
+        transition: border-color .2s;
+
+        &:hover {
+            border-color: v.$gris;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: v.$azul;
+        }
+    }
+}

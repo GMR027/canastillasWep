@@ -2,7 +2,20 @@
 include __DIR__ . '/../includes/app.php';
 soloAdmin();
 use App\Reportes;
-$reportes = Reportes::mostrarTodos();
+
+// Leer los filtros de la URL
+$anioFiltro      = (isset($_GET['anio'])      && $_GET['anio']      !== '') ? $_GET['anio']      : null; // Si no se especifica un filtro, se asigna null para mostrar todos los reportes. isset verifica si el parametro existe en la URL, y la segunda parte verifica que no esté vacío. Si ambos son verdaderos, se asigna el valor del filtro, de lo contrario se asigna null. Esto permite mostrar todos los reportes cuando no se aplican filtros.
+$clienteFiltro   = (isset($_GET['cliente'])   && $_GET['cliente']   !== '') ? $_GET['cliente']   : null; //Lee el parametro cliente de la URL y lo asigna a $clienteFiltro, o null si no se especifica.
+$ubicacionFiltro = (isset($_GET['ubicacion']) && $_GET['ubicacion'] !== '') ? $_GET['ubicacion'] : null; //Lee el parametro ubicacion de la URL y lo asigna a $ubicacionFiltro, o null si no se especifica.
+
+// Datos para los selects
+$clientes    = $db->query("SELECT id, nombre FROM usuarios WHERE rol = 2"); // rol 2 = Cliente
+$ubicaciones = $db->query("SELECT id, nombre FROM ubicacion"); //Obtiene la lista de ubicaciones para el filtro, desde la tabla ubicacion.
+$anioActual  = (int) date('Y'); //Obtiene el año actual para generar el rango de años en el filtro.
+$anios       = range($anioActual, 2023); //Genera un array de años desde el año actual hasta 2023 para el filtro de años.
+
+// Usar mostrarTodos con los filtros (esto lo modificarás en la clase)
+$reportes = Reportes::mostrarTodos($anioFiltro, $clienteFiltro, $ubicacionFiltro); //Obtiene los reportes aplicando los filtros seleccionados por el usuario. Si un filtro es null, se mostrarán todos los reportes para ese criterio.
 
 // Lee el parametro st de la URL y lo convierte a entero para comparar con ===.
 $mensaje = (int) ($_GET['st'] ?? 0);
@@ -47,6 +60,43 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
    ?>
 </section>
+
+<form action="" method="get" class="filtros contenedor"> <!-- Formulario para los filtros, con método GET para que los filtros se reflejen en la URL. -->
+  <div>
+    <select class="filtro-grupo" name="anio" id=""> <!-- Select para filtrar por año, con opción por defecto para mostrar todos los años. -->
+    <option value="">--Filtro por año--</option>
+    <?php foreach($anios as $year): ?> <!-- Itera sobre el array de años para generar las opciones del select. -->
+      <option value="<?php echo $year; ?>" <?php echo ($anioFiltro == $year) ? 'selected' : ''; ?>> <!-- Marca como seleccionado el año que coincide con el filtro actual. -->
+        <?php echo $year; ?> <!-- Muestra el año como texto de la opción. -->
+      </option>
+      <?php endforeach;
+      ?>
+    </select>
+
+  <select class="filtro-grupo" name="cliente">
+    <option value="">--Filtro por cliente--</option>
+    <?php while($cliente = $clientes->fetch_assoc()): ?>
+      <option value="<?php echo $cliente['id']; ?>" <?php echo ($clienteFiltro == $cliente['id']) ? 'selected' : ''; ?>>
+        <?php echo $cliente['nombre']; ?>
+      </option>
+    <?php endwhile; ?>
+  </select>
+
+    <select class="filtro-grupo" name="ubicacion">
+      <option value="">--Filtro por ubicacion--</option>
+      <?php while($ubicacion = $ubicaciones->fetch_assoc()): ?>
+        <option value="<?php echo $ubicacion['id']; ?>" <?php echo ($ubicacionFiltro == $ubicacion['id']) ? 'selected' : ''; ?>>
+          <?php echo $ubicacion['nombre']; ?>
+        </option>
+      <?php endwhile; ?>
+    </select>
+  </div>
+
+  <div>
+    <button type="submit" class="button">Filtrar</button>
+    <a href="/admin/index.php" class="button">Limpiar Filtro</a>
+  </div>
+</form>
 
 <section>
   <h1>Ultimas entregas</h1>
