@@ -7,7 +7,7 @@ class Reportes {
   public static function setDB($database) {
     self::$db = $database;
   }
-  protected static $columnasDB = ['id', 'fecha', 'cliente', 'producto', 'cantidad', 'ubicacion', 'maps', 'lugar', 'imagen'];
+  protected static $columnasDB = ['id', 'fecha', 'cliente', 'producto', 'cantidad', 'ubicacion', 'maps', 'lugar', 'imagen', 'comentarios'];
   protected static $errores = [];
 
 
@@ -28,6 +28,7 @@ class Reportes {
   public $telefono;
   public $ubicacion_nombre;
   public $nombre_empresa;
+  public $comentarios;
 
   public function __construct($args = []) {
     $this->id = $args['id'] ?? null;
@@ -47,6 +48,7 @@ class Reportes {
     $this->telefono = $args['telefono'] ?? '';
     $this->ubicacion_nombre = $args['ubicacion_nombre'] ?? '';
     $this->nombre_empresa = $args['nombre_empresa'] ?? '';
+    $this->comentarios = $args['comentarios'] ?? '';
   }
 
   //CRUD

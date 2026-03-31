@@ -44,4 +44,7 @@
           <img src="/public/image/<?php echo $reporte->imagen; ?>" alt="Foto de entrega" class="foto-entrega">
         </div>
       <?php endif; ?>
+
+      <label for="comentarios">Comentarios</label>
+      <textarea id="comentarios" name="comentarios"><?php echo escaparValores($reporte->comentarios); ?></textarea>
     </fieldset>

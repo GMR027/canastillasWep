@@ -7,7 +7,7 @@ class Pedidos {
   public static function setDB($database) {
     self::$db = $database;
   }
-  protected static $columnasDB = ['id', 'fecha', 'numeroPedido', 'producto', 'cantidad', 'estatus', 'imagen'];
+  protected static $columnasDB = ['id', 'fecha', 'numeroPedido', 'producto', 'cantidad', 'estatus', 'imagen', 'comentarios', 'embarque', 'fechaEmbarque', 'fechaRecibo', 'costoSinIva', 'costoConIva'];
   protected static $errores = [];
 
 
@@ -18,7 +18,12 @@ class Pedidos {
   public $cantidad;
   public $estatus;
   public $imagen;
-
+  public $comentarios;
+  public $embarque;
+  public $fechaEmbarque;
+  public $fechaRecibo;
+  public $costoSinIva;
+  public $costoConIva;
 
   public function __construct($args = []) {
     $this->id = $args['id'] ?? null;
@@ -28,6 +33,12 @@ class Pedidos {
     $this->cantidad = $args['cantidad'] ?? '';
     $this->estatus = $args['estatus'] ?? '';
     $this->imagen = $args['imagen'] ?? '';
+    $this->comentarios = $args['comentarios'] ?? '';
+    $this->embarque = $args['embarque'] ?? '';
+    $this->fechaEmbarque = $args['fechaEmbarque'] ?? '';
+    $this->fechaRecibo = $args['fechaRecibo'] ?? '';
+    $this->costoSinIva = $args['costoSinIva'] ?? '';
+    $this->costoConIva = $args['costoConIva'] ?? '';
   }
 
   //CRUD
@@ -202,5 +213,21 @@ class Pedidos {
     $anio = date('Y', $ts);
     // Arma el formato final solicitado: 00/enero/2026.
     return "$dia/$mes/$anio";
+  }
+
+  public function diasEnTransito() {
+    if(!$this->fechaEmbarque || !$this->fechaRecibo) return ''; // Si no hay fechas para calcular, regresa vacio para evitar errores visuales.
+    $embarque = new \DateTime($this->fechaEmbarque); // Convierte la fecha de embarque a objeto DateTime para poder calcular la diferencia.
+    $recibo = new \DateTime($this->fechaRecibo); // Convierte la fecha de recibo a objeto DateTime para poder calcular la diferencia.
+    $diferencia = $embarque->diff($recibo); // Calcula la diferencia entre las dos fechas, obteniendo un objeto DateInterval con la diferencia en años, meses y días.
+    return $diferencia->days; // Regresa solo la cantidad total de días en tránsito, sin importar meses o años.
+  }
+
+  public function claseTransito() {
+    $dias = $this->diasEnTransito();
+    if($dias === '') return '';
+    if($dias <= 7) return 'transito-rapido';
+    if($dias <= 12) return 'transito-normal';
+    return 'transito-lento';
   }
 }

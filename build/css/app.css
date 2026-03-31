@@ -925,6 +925,22 @@ li svg {
   background-color: #1b5e20;
 }
 
+.dias-transito {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: bold;
+}
+.dias-transito.transito-rapido {
+  background-color: #2e7d32;
+}
+.dias-transito.transito-normal {
+  background-color: #f9a825;
+}
+.dias-transito.transito-lento {
+  background-color: #c62828;
+}
+
 .foto-entrega-detalle-container {
   display: flex;
   flex-direction: column;

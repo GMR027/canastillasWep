@@ -48,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
    ?>
 </section>
 
-<section class="contenedor">
+<section>
   <h1>Ultimas entregas</h1>
   <table class="tablas">
     <thead>
@@ -58,6 +58,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <th>Cliente</th>
         <th class="info hMovilTablas">Producto</th>
         <th class="hMovilTablas">Cantidad</th>
+        <th class="hMovilTablas">Imagen</th>
         <th>Reporte</th>
         <th>Acciones</th>
       </tr>
@@ -73,6 +74,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Muestra el nombre del producto obtenido con JOIN a la tabla productos. -->
             <td class="info hMovilTablas"><?php echo $reporte->nombre_producto; ?></td>
           <td class="hMovilTablas"><?php echo $reporte->cantidad; ?></td> 
+          <td class="foto-entrega-container hMovilTablas">
+            <img src="/public/image/<?php echo $reporte->imagen; ?>" alt="Foto de entrega" class="foto-entrega">
+          </td>
           <td class="hMovilTablas acciones">
             <a class="button" href="/admin/reportes/detalleReportesAdmin.php?id=<?php echo $reporte->id; ?>">Reporte</a>
             <a href="/admin/reportes/recibo.php?id=<?php echo $reporte->id; ?>" class="button">Imprimir Recibo</a>

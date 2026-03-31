@@ -14,9 +14,18 @@ export function css(done) {
   done()
 }
 
+export function js(done) {
+  console.log('Compilando js');
+  src('src/js/app.js')
+    .pipe(dest('build/js'))
+
+  done()
+}
+
 
 export function build() {
   watch('src/scss/**/*.scss', css)
+  watch('src/js/**/*.js', js)
 }
 
 

@@ -57,3 +57,22 @@
     background-color: #1b5e20;
   }
 }
+
+.dias-transito { // Nueva clase para los días en tránsito
+  padding: .4rem .8rem;
+  border-radius: .5rem;
+  color: white;
+  font-weight: bold;
+
+  &.transito-rapido {
+    background-color: #2e7d32;
+  }
+
+  &.transito-normal {
+    background-color: #f9a825;
+  }
+
+  &.transito-lento {
+    background-color: #c62828;
+  }
+}

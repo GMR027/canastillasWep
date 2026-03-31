@@ -34,7 +34,7 @@ $reporte = Reportes::buscarID($_GET['id']);
   <h1>Detalle de entrega</h1>
   <P>Nombre de cliente: <?php echo $reporte->nombre_cliente; ?></P>
   <p>Contacto: <?php echo $reporte->telefono; ?></p>
-  <p class="hMovilTablas">Lugar de entrega: <?php echo $reporte->ubicacion_nombre; ?></p>
+  <p class="hMovilTablas">Lugar de entrega: <?php echo $reporte->ubicacion_nombre; ?>, <?php echo $reporte->lugar;?></p>
   <table class="tablas">
     <thead>
       <tr>
@@ -63,6 +63,13 @@ $reporte = Reportes::buscarID($_GET['id']);
     <img src="/public/image/<?php echo $reporte->imagen; ?>" alt="Foto de entrega" class="foto-entrega">
   </div>
 </section>
+
+<?php if($reporte->comentarios): ?>
+  <section class="contenedor">
+    <h2>Comentarios</h2>
+    <p><?php echo nl2br(escaparValores($reporte->comentarios)); ?></p>
+  </section>
+<?php endif; ?> 
 
 <div class="botones-detalle width-50">
     <a class="button" href="<?php echo $reporte->maps ?>" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>

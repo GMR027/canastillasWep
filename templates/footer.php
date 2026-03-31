@@ -34,6 +34,6 @@
     <p>Todos los derechos reservados, Canastillas de la Baja <?php echo date('Y'); ?></p>
   </footer>
 
-  <script src="src/js/app.js"></script>
+  <script src="/build/js/app.js"></script>
 </body>
 </html>

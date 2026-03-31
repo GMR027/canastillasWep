@@ -12,6 +12,12 @@
       <label for="cantidad">Cantidad</label>
       <input type="number" id="cantidad" name="cantidad" min="1" value="<?php echo escaparValores($pedido->cantidad); ?>">
 
+      <label for="costoSinIva">Costo sin IVA</label>
+      <input type="number" id="costoSinIva" name="costoSinIva" step="0.01" value="<?php echo escaparValores($pedido->costoSinIva); ?>">
+
+      <label for="costoConIva">Costo con IVA</label>
+      <input type="number" id="costoConIva" name="costoConIva" step="0.01" value="<?php echo escaparValores($pedido->costoConIva); ?>">
+
       <label for="estatus">Estatus de pedido</label>
       <select id="estatus" name="estatus">
         <option value="" disabled selected>Seleccione</option>
@@ -22,6 +28,15 @@
         <option value="5" <?php echo $pedido->estatus == 5 ? 'selected' : ''; ?>>Pagado</option>
       </select>
 
+      <label for="embarque">Numero Embarque</label>
+      <input type="text" id="embarque" name="embarque" value="<?php echo escaparValores($pedido->embarque); ?>">
+
+      <label for="fechaEmbarque">Fecha Embarque</label>
+      <input type="date" id="fechaEmbarque" name="fechaEmbarque" value="<?php echo escaparValores($pedido->fechaEmbarque); ?>">
+
+      <label for="fechaRecibo">Fecha Recibo</label>
+      <input type="date" id="fechaRecibo" name="fechaRecibo" value="<?php echo escaparValores($pedido->fechaRecibo); ?>">
+
       <label for="imagen">Imagen de pedido</label>
       <input type="file" id="imagen" name="imagen">
 
@@ -30,5 +45,8 @@
           <img src="/public/image/<?php echo $pedido->imagen; ?>" alt="Foto de pedido" class="foto-entrega">
         </div>
       <?php endif; ?>
+
+      <label for="comentarios">Comentarios</label>
+      <textarea id="comentarios" name="comentarios"><?php echo escaparValores($pedido->comentarios); ?></textarea>
 
     </fieldset>

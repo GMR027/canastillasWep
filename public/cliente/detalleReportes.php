@@ -59,6 +59,13 @@ template('headerHTML');
   </div>
 </section>
 
+<?php if($reporte->comentarios): ?>
+  <section class="contenedor">
+    <h2>Comentarios</h2>
+    <p><?php echo nl2br(escaparValores($reporte->comentarios)); ?></p>
+  </section>
+<?php endif; ?> 
+
 <div class="botones-detalle width-50">
     <a class="button" href="<?php echo $reporte->maps ?>" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
     <a class="button" href="/public/cliente/index.php">Regresar</a>
