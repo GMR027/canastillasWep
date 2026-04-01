@@ -31,14 +31,14 @@ class Pedidos {
     $this->numeroPedido = $args['numeroPedido'] ?? '';
     $this->producto = $args['producto'] ?? '';
     $this->cantidad = $args['cantidad'] ?? '';
-    $this->estatus = $args['estatus'] ?? '';
+    $this->estatus = $args['estatus'] ?? '0';
     $this->imagen = $args['imagen'] ?? '';
     $this->comentarios = $args['comentarios'] ?? '';
     $this->embarque = $args['embarque'] ?? '';
-    $this->fechaEmbarque = $args['fechaEmbarque'] ?? '';
-    $this->fechaRecibo = $args['fechaRecibo'] ?? '';
-    $this->costoSinIva = $args['costoSinIva'] ?? '';
-    $this->costoConIva = $args['costoConIva'] ?? '';
+    $this->fechaEmbarque = $args['fechaEmbarque'] ?: null;
+    $this->fechaRecibo = $args['fechaRecibo'] ?: null;
+    $this->costoSinIva = $args['costoSinIva'] ?: null;
+    $this->costoConIva = $args['costoConIva'] ?: null;
   }
 
   //CRUD
@@ -55,8 +55,8 @@ class Pedidos {
   public function sanitizarAtributos() {
     $atributos = $this->atributos();
     $sanitizado = [];
-    foreach($atributos as $key => $value) {
-      $sanitizado[$key] = self::$db->escape_string($value);
+    foreach($atributos as $key => $value) { //Sanitiza cada valor usando escape_string para prevenir SQL injection. Si el valor es null, lo deja como null para que se inserte como NULL en la base de datos.
+      $sanitizado[$key] = is_null($value) ? null : self::$db->escape_string($value); //Si el valor es null, lo deja como null para que se inserte como NULL en la base de datos. De lo contrario, lo sanitiza con escape_string para prevenir SQL injection.
     }
     return $sanitizado;
   }
@@ -72,9 +72,9 @@ class Pedidos {
   public function crear() {
     $atributos = $this->sanitizarAtributos();
     $columnas = join(', ', array_keys($atributos));
-    $valores = join("', '", array_values($atributos));
+    $valores = join(', ', array_map(fn($v) => is_null($v) ? 'NULL' : "'$v'", array_values($atributos)));
 
-    $query = "INSERT INTO pedidos" . " ($columnas) VALUES ('$valores')";
+    $query = "INSERT INTO pedidos ($columnas) VALUES ($valores)";
     $resultado = self::$db->query($query);
     if($resultado) {
       header('Location: /admin/pedidos/index.php?st=1');
@@ -94,9 +94,10 @@ class Pedidos {
   }
 
   public function sincronizarCambios($args = []) {
+    $camposOpcionales = ['fechaEmbarque', 'fechaRecibo', 'costoSinIva', 'costoConIva'];
     foreach($args as $key => $value) {
       if(property_exists($this, $key) && !is_null($value)) {
-        $this->$key = $value;
+        $this->$key = (in_array($key, $camposOpcionales) && $value === '') ? null : $value;
       }
     }
   }
@@ -105,7 +106,7 @@ class Pedidos {
     $atributos = $this->sanitizarAtributos();
     $valores = [];
     foreach($atributos as $key => $value) {
-      $valores[] = "$key = '$value'";
+      $valores[] = is_null($value) ? "$key = NULL" : "$key = '$value'";
     }
     $valores = join(', ', $valores);
     $query = "UPDATE pedidos SET $valores WHERE id = '" . self::$db->escape_string($this->id) . "' ";
@@ -184,7 +185,9 @@ class Pedidos {
     return $objeto;
   }
 
-  public static function mostrarTodos($anio = null, $estatus = null, $diasTransito = null) {
+  public static function mostrarTodos($anio = null, $estatus = null, $diasTransito = null, $limite = 5, $offset = 0) {
+    $limite = intval($limite);
+    $offset = intval($offset);
     // Selecciona todos los campos del pedido.
     $query = "SELECT * FROM pedidos WHERE 1=1"; // Ordenamos por fecha descendente para mostrar los más recientes primero. es un truco para facilitar la concatenación de condiciones con AND sin preocuparnos por si es la primera condición o no.
 
@@ -206,13 +209,14 @@ class Pedidos {
       if($diasTransito === 1) {
         $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 0 AND 7"; //Datediff devuelve la cantidad de días entre fechaRecibo y fechaEmbarque. Si el resultado está entre 0 y 7, se considera tránsito rápido.
       } elseif($diasTransito === 2) {
-        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 8 AND 15";
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 8 AND 15"; //Si el resultado está entre 8 y 15, se considera tránsito normal.
       } elseif($diasTransito === 3) {
-        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) > 15";
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) > 15"; //Si el resultado es mayor a 15, se considera tránsito lento.
       }
     }
 
     $query .= " ORDER BY pedidos.fecha DESC"; //Ordenamos por fecha descendente para mostrar los más recientes primero.
+    $query .= " LIMIT $limite OFFSET $offset"; //Agregamos LIMIT y OFFSET para paginación.
 
     $resultado = self::consultaSQL($query);
     return $resultado;
@@ -256,5 +260,34 @@ class Pedidos {
     if($dias <= 7) return 'transito-rapido';
     if($dias <= 12) return 'transito-normal';
     return 'transito-lento';
+  }
+
+  public static function contarPedidos($anio = null, $estatus = null, $diasTransito = null) {
+    $query = "SELECT COUNT(*) as total FROM pedidos WHERE 1=1";
+
+    if($anio) {
+      $anio = intval($anio);
+      $query .= " AND YEAR(pedidos.fecha) = $anio";
+    }
+
+    if($estatus) {
+      $estatus = intval($estatus);
+      $query .= " AND pedidos.estatus = $estatus";
+    }
+
+    if($diasTransito) {
+      $diasTransito = intval($diasTransito);
+      if($diasTransito === 1) {
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 0 AND 7";
+      } elseif($diasTransito === 2) {
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) BETWEEN 8 AND 15";
+      } elseif($diasTransito === 3) {
+        $query .= " AND DATEDIFF(fechaRecibo, fechaEmbarque) > 15";
+      }
+    }
+
+    $resultado = self::$db->query($query);
+    $total = $resultado->fetch_assoc()['total']; //Obtiene el total de pedidos que coinciden con los filtros aplicados.
+    return intval($total); //Convierte el total a entero antes de regresarlo para asegurar que siempre sea un número, incluso si la consulta devuelve un valor inesperado.
   }
 }

@@ -14,8 +14,9 @@ $ubicaciones = $db->query("SELECT id, nombre FROM ubicacion"); //Obtiene la list
 $anioActual  = (int) date('Y'); //Obtiene el año actual para generar el rango de años en el filtro.
 $anios       = range($anioActual, 2023); //Genera un array de años desde el año actual hasta 2023 para el filtro de años.
 
-// Usar mostrarTodos con los filtros (esto lo modificarás en la clase)
-$reportes = Reportes::mostrarTodos($anioFiltro, $clienteFiltro, $ubicacionFiltro); //Obtiene los reportes aplicando los filtros seleccionados por el usuario. Si un filtro es null, se mostrarán todos los reportes para ese criterio.
+//Seccion para la paginacion de usuarios
+$paginacion = paginacion(10, Reportes::contarNumReportes($anioFiltro, $clienteFiltro, $ubicacionFiltro));
+$reportes = Reportes::mostrarTodos($anioFiltro, $clienteFiltro, $ubicacionFiltro, $paginacion['limite'], $paginacion['offset']);
 
 // Lee el parametro st de la URL y lo convierte a entero para comparar con ===.
 $mensaje = (int) ($_GET['st'] ?? 0);
@@ -98,6 +99,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </form>
 
+<!-- Seccion de paginacion de reportes -->
 <section>
   <h1>Ultimas entregas</h1>
   <table class="tablas">
@@ -144,6 +146,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php endforeach; ?>
     </tbody>
   </table>
+<?php require __DIR__ . '/../templates/paginacion.php'; ?>
 </section>
 
 

@@ -95,25 +95,8 @@ class Reportes {
   public static function buscarID($id) {
     // Convertimos $id a entero para evitar SQL injection,
     // ya que este valor viene directamente de $_GET['id'].
-    $id = intval($id);
-
-    // Antes solo habia "SELECT * FROM reportes" lo cual SOLO traía
-    // los campos propios de la tabla reportes.
-    // El problema: nombre_cliente y telefono viven en la tabla "usuarios",
-    // no en "reportes", por eso siempre salían vacíos.
-    //
-    // Solución: hacemos JOIN con "usuarios" y "productos" igual que en
-    // mostrarTodos(), para traer esos campos junto con el reporte.
-    //
-    // LEFT JOIN significa: aunque no exista un usuario o producto relacionado,
-    // igual nos devuelve el reporte (en lugar de no devolver nada).
-    //
-    // "usuarios.nombre AS nombre_cliente" le da un alias al campo para que
-    // coincida con la propiedad $nombre_cliente de esta clase.
-    // "usuarios.telefono AS telefono" hace lo mismo con $telefono.
-    // 'ubicacion' en reportes guarda el ID de la tabla 'ubicacion'.
-    // Hacemos JOIN para traer el nombre legible como 'ubicacion_nombre'.
-    $query = "SELECT reportes.*, 
+    $id = intval($id); //Convertimos a entero para evitar SQL injection, ya que este valor viene directamente de $_GET['id'].
+    $query = "SELECT reportes.*,
               usuarios.nombre AS nombre_cliente,
               usuarios.telefono AS telefono,
               usuarios.empresa AS nombre_empresa,
@@ -124,7 +107,7 @@ class Reportes {
               LEFT JOIN usuarios ON reportes.cliente = usuarios.id 
               LEFT JOIN productos ON reportes.producto = productos.id
               LEFT JOIN ubicacion ON reportes.ubicacion = ubicacion.id
-              WHERE reportes.id = $id";
+              WHERE reportes.id = $id"; //Agregamos LEFT JOIN para traer el nombre del cliente, producto y ubicación relacionados con el reporte, y filtramos por el ID del reporte.
 
     $resultado = self::consultaSQL($query);
     // array_shift devuelve el primer (y único) elemento del arreglo
@@ -225,7 +208,9 @@ class Reportes {
     return $objeto;
   }
 
-  public static function mostrarTodos($anio = null, $clienteId = null, $ubicacionId = null) { //Agregamos parámetros opcionales para filtrar por año, cliente o ubicación.
+  public static function mostrarTodos($anio = null, $clienteId = null, $ubicacionId = null, $limite = 5, $offset = 0) { //Agregamos parámetros opcionales para filtrar por año, cliente o ubicación.
+  $limite = intval($limite); //Convertimos a entero para evitar SQL injection, ya que este valor viene de $_GET['limite'].
+  $offset = intval($offset);
        $query = "SELECT reportes.*, 
               usuarios.nombre AS nombre_cliente,
               usuarios.telefono AS telefono,
@@ -261,12 +246,12 @@ class Reportes {
         $query .= " WHERE " . implode(" AND ", $condiciones); //implode une las condiciones con " AND " para que todas se apliquen al mismo tiempo.
     }
 
-    $query .= " ORDER BY reportes.fecha DESC"; //Agregamos ordenamiento por fecha descendente para mostrar los reportes más recientes primero.
+    $query .= " ORDER BY reportes.fecha DESC LIMIT $limite OFFSET $offset"; //Agregamos ordenamiento por fecha descendente para mostrar los reportes más recientes primero.
 
     return self::consultaSQL($query); //Ejecutamos la consulta y devolvemos los resultados como objetos Reportes.
   }
 
-  public static function mostrarEntregasLimitado($limite) {
+  public static function mostrarEntregasLimitadoPaginaPrincipal($limite) {
     $limite = intval($limite); // Convertimos a entero para evitar SQL injection, ya que este valor viene de $_GET['limite'].
     $query = "SELECT reportes.*, 
               usuarios.nombre AS nombre_cliente,
@@ -337,5 +322,29 @@ class Reportes {
     $anio = date('Y', $ts);
     // Arma el formato final solicitado: 00/enero/2026.
     return "$dia/$mes/$anio";
+  }
+
+  public static function contarNumReportes($anio = null, $clienteId = null, $ubicacionId = null) {
+    $query = "SELECT COUNT(*) AS totalReportes FROM reportes"; //Contamos el total de reportes sin filtros para luego aplicar los filtros condicionalmente.
+    $condiciones = []; //Array para guardar las condiciones de filtrado.
+
+    if($anio) {
+      $anio = intval($anio);
+      $condiciones[] = "YEAR(reportes.fecha) = $anio"; //Agregamos una condición al array para filtrar por año, usando la función YEAR() de SQL para extraer el año de la fecha.
+    }
+    if($clienteId) {
+      $clienteId = intval($clienteId);
+      $condiciones[] = "reportes.cliente = $clienteId";
+    }
+    if($ubicacionId) {
+      $ubicacionId = intval($ubicacionId);
+      $condiciones[] = "reportes.ubicacion = $ubicacionId";
+    }
+    if(!empty($condiciones)) {
+      $query .= " WHERE " . implode(" AND ", $condiciones); //Agrega las condiciones al query si existen, unidas por AND.
+    }
+    $resultado = self::$db->query($query); //Ejecutamos la consulta y obtenemos el resultado, que contiene el conteo total de reportes bajo el alias 'totalReportes'.
+    $fila = $resultado->fetch_assoc(); //Obtenemos la fila resultante, que contiene el conteo total de reportes bajo el alias 'totalReportes'.
+    return $fila['totalReportes'] ?? 0; // Devuelve el total de reportes
   }
 }

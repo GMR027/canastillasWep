@@ -169,11 +169,18 @@ class Usuarios {
     return $objeto;
   }
 
-  public static function mostrarTodos() {
+  public static function mostrarTodos($limite = 10, $offset = 0) {
     // Selecciona todos los campos del usuario.
-    $query = "SELECT * FROM usuarios";
+    $limite = intval($limite);
+    $offset = intval($offset);
+    $query = "SELECT * FROM usuarios ORDER BY FIELD(rol, 1, 3, 2) ASC LIMIT $limite OFFSET $offset";
     $resultado = self::consultaSQL($query);
     return $resultado;
   }
-
+  public static function contarTodos() {
+    $query = "SELECT COUNT(*) AS total FROM usuarios";
+    $resultado = self::$db->query($query);
+    $fila = $resultado->fetch_assoc();
+    return (int) $fila['total'];
+  }
 }

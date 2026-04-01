@@ -60,7 +60,8 @@ function soloAdmin() : void {
 
 function soloCliente() : void {
   iniciarSesion();
-  if((int) $_SESSION['rol'] !== 2) {
+  $rol = (int) $_SESSION['rol'];
+  if($rol !== 2 && $rol !== 1) { //Si el rol no es cliente ni admin, redirige al login.
     header('Location: /login..php');
     exit;
   }
@@ -68,8 +69,22 @@ function soloCliente() : void {
 
 function soloProveedor() : void {
   iniciarSesion();
-  if((int) $_SESSION['rol'] !== 3) {
+  $rol = (int) $_SESSION['rol'];
+  if($rol !== 3 && $rol !== 1) { //Si el rol no es proveedor ni admin, redirige al login.
     header('Location: /login..php');
     exit;
   }
+}
+
+function paginacion($registrosPorPagina, $claseFuncion){
+  $reportesPorPagina = intval($registrosPorPagina);
+  $paginaActual = isset($_GET['pagina']) ? max(1, intval($_GET['pagina'])) : 1;
+  $totalDeRegistrosMostrados = $claseFuncion;
+  $totalPaginas = ceil($totalDeRegistrosMostrados / $reportesPorPagina);
+  if($paginaActual > $totalPaginas && $totalPaginas > 0)
+  {
+      $paginaActual = $totalPaginas;
+  }
+  $offset = ($paginaActual - 1) * $reportesPorPagina;
+  return ['limite' => $reportesPorPagina, 'offset' => $offset, 'paginaActual' => $paginaActual, 'totalPaginas' => $totalPaginas];
 }

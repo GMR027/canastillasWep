@@ -2,7 +2,11 @@
 include __DIR__ . '/../../includes/app.php';
 soloAdmin();
 use App\Usuarios;
-$usuarios = Usuarios::mostrarTodos();
+
+//Seccion para la paginacion de usuarios
+$paginacion = paginacion(4, Usuarios::contarTodos());
+$usuarios = Usuarios::mostrarTodos($paginacion['limite'], $paginacion['offset']);
+
 
 // Lee el parametro st de la URL y lo convierte a entero para comparar con ===.
 $mensaje = (int) ($_GET['st'] ?? 0);
@@ -91,6 +95,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php endforeach; ?>
     </tbody>
   </table>
+  <?php require __DIR__ . '/../../templates/paginacion.php'; ?>
 </section>
 
 

@@ -1170,3 +1170,27 @@ li svg {
   outline: none;
   border-color: #03396c;
 }
+
+.paginacion {
+  min-height: 8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.paginacion .button {
+  min-width: 4rem;
+  text-align: center;
+}
+.paginacion .button.activo {
+  background-color: #ee4035;
+  color: #ffffff;
+  pointer-events: none;
+}
+.paginacion p {
+  width: 100%;
+  text-align: center;
+  color: #aaaaaa;
+  font-size: 1.2rem;
+}

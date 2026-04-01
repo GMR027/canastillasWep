@@ -1,0 +1,26 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.paginacion {
+  min-height: 8rem;
+    @include m.flex-row (center, center);
+    flex-wrap: wrap;
+
+    .button {
+        min-width: 4rem;
+        text-align: center;
+
+        &.activo {
+            background-color: v.$rojo;
+            color: v.$blanco;
+            pointer-events: none; // Desactiva el clic en la página actual
+        }
+    }
+
+    p {
+        width: 100%;
+        text-align: center;
+        color: v.$gris;
+        font-size: 1.2rem;
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 use App\Reportes;
-$entregas = Reportes::mostrarEntregasLimitado($limite);
+$entregas = Reportes::mostrarEntregasLimitadoPaginaPrincipal($limite);
 
 
 ?>

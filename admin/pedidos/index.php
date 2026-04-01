@@ -4,7 +4,7 @@
   soloAdmin();
   use App\Pedidos;
 
-  // Leer los filtros de la URL
+// Leer los filtros de la URL
 $anioFiltro      = (isset($_GET['anio'])      && $_GET['anio']      !== '') ? $_GET['anio']      : null; // Si no se especifica un filtro, se asigna null para mostrar todos los reportes. isset verifica si el parametro existe en la URL, y la segunda parte verifica que no esté vacío. Si ambos son verdaderos, se asigna el valor del filtro, de lo contrario se asigna null. Esto permite mostrar todos los reportes cuando no se aplican filtros.
 $estatusFiltro = (isset($_GET['estatus']) && $_GET['estatus'] !== '') ? $_GET['estatus'] : null; //Lee el parametro estatus de la URL y lo asigna a $estatusFiltro, o null si no se especifica.
 $diasTransitoFiltro = (isset($_GET['dias_transito']) && $_GET['dias_transito'] !== '') ? $_GET['dias_transito'] : null; //Lee el parametro dias_transito de la URL y lo asigna a $diasTransitoFiltro, o null si no se especifica.
@@ -29,8 +29,10 @@ $estadoTransitoOpciones = [
     3 => 'Más de 15 días'
 ];
 
+//Seccion para la paginacion de usuarios
+$paginacion = paginacion(10, Pedidos::contarPedidos($anioFiltro, $estatusFiltro, $diasTransitoFiltro));
+$pedidos = Pedidos::mostrarTodos($anioFiltro, $estatusFiltro, $diasTransitoFiltro, $paginacion['limite'], $paginacion['offset']);
 
-  $pedidos = Pedidos::mostrarTodos($anioFiltro, $estatusFiltro, $diasTransitoFiltro); //Obtiene los pedidos aplicando los filtros seleccionados por el usuario. Si un filtro es null, se mostrarán todos los pedidos para ese criterio.
 
   $mensaje = (int) ($_GET['st'] ?? 0);
 
@@ -76,7 +78,6 @@ template('headerHTML');
 </section>
 
 <form action="" method="get" class="filtros contenedor"> <!-- Formulario para los filtros, con método GET para que los filtros se reflejen en la URL. -->
-
   <div>
     <select class="filtro-grupo" name="anio" id=""> <!-- Select para filtrar por año, con opción por defecto para mostrar todos los años. -->
       <option value="">--Filtro por año--</option>
@@ -115,77 +116,8 @@ template('headerHTML');
 
 <section>
   <h1>Ultimos pedidos</h1>
-  <table class="tablas">
-    <thead>
-      <tr>
-        <th class="hMovilTablas">ID</th>
-        <th class="hMovilTablas">Fecha</th>
-        <th>Num Pedido</th>
-        <th class="info">Producto</th>
-        <th>Cantidad</th>
-        <th class="hMovilTablas">Costo sin IVA</th>
-        <th class="hMovilTablas">Costo con IVA</th>
-        <th class="hMovilTablas">Estatus</th>
-        <th class="hMovilTablas">Fecha Embarque</th>
-        <th class="hMovilTablas">Fecha Recibo</th>
-        <th class="hMovilTablas">Días en Tránsito</th>
-        <th class="hMovilTablas">Imagen</th>
-        <th class="hMovilTablas">Comentarios</th>
-        <th class="hMovilTablas">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach($pedidos as $pedido): ?>
-      <tr>
-        <td class="hMovilTablas"><?php echo $pedido->id; ?></td>
-        <td class="hMovilTablas"><?php echo $pedido->fechaFormateada(); ?></td>
-        <td class="info"><?php echo $pedido->numeroPedido; ?></td>
-        <td class="info"><?php echo $pedido->producto; ?></td>
-        <td><?php echo $pedido->cantidad; ?></td> 
-        <td class="hMovilTablas">$<?php echo $pedido->costoSinIva; ?>.00 MXN</td>
-        <td class="hMovilTablas">$<?php echo $pedido->costoConIva; ?>.00 MXN</td>
-        <td class="hMovilTablas indicadores">
-          <?php 
-            $estadusInfo = [ // Agrega un array para mapear los estatus a texto y clases CSS.
-              1 => ['texto' => 'Pendiente', 'clase' => 'pendiente'],
-              2 => ['texto' => 'En tránsito', 'clase' => 'en-transito'],
-              3 => ['texto' => 'Entregado', 'clase' => 'entregado'],
-              4 => ['texto' => 'Cancelado', 'clase' => 'cancelado'],
-              5 => ['texto' => 'Pagado', 'clase' => 'pagado']
-            ];
-            $info = $estadusInfo[$pedido->estatus] ?? ['texto' => 'Desconocido', 'clase' => 'desconocido']; //Si el estatus no coincide con ninguno definido, muestra "Desconocido" y una clase por defecto.
-          ?>
-          <span class="indicadores <?php echo $info['clase']; ?>"><?php echo $info['texto']; ?></span>
-        </td>
-        <td class="hMovilTablas"><?php echo $pedido->fechaEmbarque ? date('d/m/Y', strtotime($pedido->fechaEmbarque)) : ''; ?></td>
-        <td class="hMovilTablas"><?php echo $pedido->fechaRecibo ? date('d/m/Y', strtotime($pedido->fechaRecibo)) : ''; ?></td>
-
-        <td class="hMovilTablas">
-          <?php if($pedido->diasEnTransito() !== ''): ?>
-            <span class="dias-transito <?php echo $pedido->claseTransito(); ?>">
-              <?php echo $pedido->diasEnTransito() . ' días'; ?>
-            </span>
-          <?php endif; ?>
-        </td>
-
-
-        <td class="foto-entrega-container hMovilTablas">
-          <img src="/public/image/<?php echo $pedido->imagen; ?>" alt="Foto de pedido" class="foto-entrega">
-        </td>
-        <td class="hMovilTablas"><?php echo nl2br(escaparValores($pedido->comentarios)); ?></td>
-        <td class="hMovilTablas">
-          <div class="acciones">
-            <a class="button editar" href="editarPedidos.php?id=<?php echo $pedido->id; ?>">Editar</a>
-            <form action="" method="POST">
-              <input type="hidden" name="id" value="<?php echo $pedido->id; ?>">
-              <button type="submit" class="button eliminar">Eliminar</button>
-            </form>
-          </div>
-        </td>
-      </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+  <?php require __DIR__ . '/../../templates/infoPedidos.php'; ?>
+  <?php require __DIR__ . '/../../templates/paginacion.php'; ?>
 </section>
 
 <?php
