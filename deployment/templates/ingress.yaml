@@ -8,17 +8,21 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.ingress.host }}
+    {{- range .Values.ingress.hosts }}
+    - {{ . }}
+    {{- end }}
     secretName: {{ .Chart.Name }}-cert
   rules:
-    - host: {{ .Values.ingress.host }}
+  {{- range .Values.ingress.hosts }}
+    - host: {{ . }}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ .Chart.Name }}
+                name: {{ $.Chart.Name }}
                 port:
-                  number: {{ .Values.service.externalPort }}
+                  number: {{ $.Values.service.externalPort }}
+  {{- end }}
 {{- end }}

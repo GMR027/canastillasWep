@@ -25,7 +25,10 @@ service:
 
 ingress:
   enabled: true
-  host: canastillas.iguzman.com.mx
+  hosts:
+    - canastillas.iguzman.com.mx
+    - canastillasdelabaja.com
+    - www.canastillasdelabaja.com
 
 resources:
   limits:
