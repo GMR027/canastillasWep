@@ -4,7 +4,7 @@ soloAdmin();
 use App\Usuarios;
 
 //Seccion para la paginacion de usuarios
-$paginacion = paginacion(4, Usuarios::contarTodos());
+$paginacion = paginacion(10, Usuarios::contarTodos());
 $usuarios = Usuarios::mostrarTodos($paginacion['limite'], $paginacion['offset']);
 
 
