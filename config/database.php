@@ -1,8 +1,13 @@
 <?php 
 
 function database(): mysqli {
-  $db = new mysqli('localhost', 'root', '', 'canastillas');
-  if(!$db) {
+  $host     = getenv('DB_HOST')     ?: 'localhost';
+  $user     = getenv('DB_USER')     ?: 'root';
+  $password = getenv('DB_PASSWORD') ?: '';
+  $name     = getenv('DB_NAME')     ?: 'canastillas';
+
+  $db = new mysqli($host, $user, $password, $name);
+  if ($db->connect_error) {
     echo 'Error al conectar a la base de datos';
     exit;
   }

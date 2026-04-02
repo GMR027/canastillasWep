@@ -24,17 +24,17 @@ function escaparValores($html) {
     return $html;
 }
 
-function validarID($id) {
+function validarID($id, string $ruta = '/admin') {
     // Si no viene el parametro 'id' en la URL, redirige al listado.
     if(is_null($id)) {
-        header('Location: index.php');
+        header('Location: ' . $ruta);
         exit;
     }
     // Verifica que sea un numero entero valido.
     $id = filter_var($id, FILTER_VALIDATE_INT);
 
     if(!$id) {
-        header('Location: index.php');
+        header('Location: ' . $ruta);
         exit;
     }
     return $id;
@@ -44,7 +44,7 @@ function iniciarSesion() : bool {
   session_start();
 
   if(!isset($_SESSION['login'])) {
-    header('Location: /login..php');
+    header('Location: /login');
     exit;
   }
   return true;
@@ -53,7 +53,7 @@ function iniciarSesion() : bool {
 function soloAdmin() : void {
   iniciarSesion();
   if((int) $_SESSION['rol'] !== 1) {
-    header('Location: /public/cliente/index.php');
+    header('Location: /cliente');
     exit;
   }
 }
@@ -62,7 +62,7 @@ function soloCliente() : void {
   iniciarSesion();
   $rol = (int) $_SESSION['rol'];
   if($rol !== 2 && $rol !== 1) { //Si el rol no es cliente ni admin, redirige al login.
-    header('Location: /login..php');
+    header('Location: /login');
     exit;
   }
 }
@@ -71,7 +71,7 @@ function soloProveedor() : void {
   iniciarSesion();
   $rol = (int) $_SESSION['rol'];
   if($rol !== 3 && $rol !== 1) { //Si el rol no es proveedor ni admin, redirige al login.
-    header('Location: /login..php');
+    header('Location: /login');
     exit;
   }
 }

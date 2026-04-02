@@ -60,7 +60,7 @@
         <?php if((int) $_SESSION['rol'] === 1): ?>
         <td class="hMovilTablas">
           <div class="acciones">
-            <a class="button editar" href="editarPedidos.php?id=<?php echo $pedido->id; ?>">Editar</a>
+            <a class="button editar" href="/admin/pedidos/editar?id=<?php echo $pedido->id; ?>">Editar</a>
             <form action="" method="POST">
               <input type="hidden" name="id" value="<?php echo $pedido->id; ?>">
               <button type="submit" class="button eliminar">Eliminar</button>

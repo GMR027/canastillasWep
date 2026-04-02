@@ -68,7 +68,7 @@ class Usuarios {
     $query = "INSERT INTO usuarios" . " ($columnas) VALUES ('$valores')";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/usuarios/index.php?st=1');
+      header('Location: /admin/usuarios?st=1');
     }
   }
 
@@ -109,7 +109,7 @@ class Usuarios {
     $query = "UPDATE usuarios SET $valores WHERE id = '" . self::$db->escape_string($this->id) . "' ";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/usuarios/index.php?st=2');
+      header('Location: /admin/usuarios?st=2');
     }
   }
   //Fin de actualizar
@@ -118,7 +118,7 @@ class Usuarios {
     $query = "DELETE FROM usuarios WHERE id = '" . self::$db->escape_string($this->id) . "'";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/usuarios/index.php?st=3');
+      header('Location: /admin/usuarios?st=3');
     }
   }
 

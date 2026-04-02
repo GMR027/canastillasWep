@@ -1,0 +1,40 @@
+replicaCount: 1
+
+volume:
+  name: 'shared-volume'
+  hostPath: /shared-master
+  mountPath: /var/www/public/image
+
+config:
+  ENV: production
+  DB_HOST: mysql.canastillas.svc.cluster.local
+  DB_NAME: canastillas
+  DB_USER: canastillas
+  DB_PASSWORD: canastillas
+
+image:
+  registry: christopherguzman
+  repository: canastillas
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 80
+
+ingress:
+  enabled: true
+  host: canastillas.iguzman.com.mx
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+deployment:
+  nodeSelector:
+    nodeProjects: 'real-clients'

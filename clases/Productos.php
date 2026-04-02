@@ -58,7 +58,7 @@ class Productos {
     $query = "INSERT INTO productos" . " ($columnas) VALUES ('$valores')";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/productos/index.php?st=1');
+      header('Location: /admin/productos?st=1');
     }
   }
 
@@ -96,7 +96,7 @@ class Productos {
     $query = "UPDATE productos SET $valores WHERE id = '" . self::$db->escape_string($this->id) . "' ";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/productos/index.php?st=2');
+      header('Location: /admin/productos?st=2');
     }
   }
   //Fin de actualizar
@@ -105,7 +105,7 @@ class Productos {
     $query = "DELETE FROM productos WHERE id = '" . self::$db->escape_string($this->id) . "'";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/productos/index.php?st=3');
+      header('Location: /admin/productos?st=3');
     }
   }
 

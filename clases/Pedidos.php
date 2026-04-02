@@ -35,10 +35,10 @@ class Pedidos {
     $this->imagen = $args['imagen'] ?? '';
     $this->comentarios = $args['comentarios'] ?? '';
     $this->embarque = $args['embarque'] ?? '';
-    $this->fechaEmbarque = $args['fechaEmbarque'] ?: null;
-    $this->fechaRecibo = $args['fechaRecibo'] ?: null;
-    $this->costoSinIva = $args['costoSinIva'] ?: null;
-    $this->costoConIva = $args['costoConIva'] ?: null;
+    $this->fechaEmbarque = $args['fechaEmbarque'] ?? null;
+    $this->fechaRecibo = $args['fechaRecibo'] ?? null;
+    $this->costoSinIva = $args['costoSinIva'] ?? null;
+    $this->costoConIva = $args['costoConIva'] ?? null;
   }
 
   //CRUD
@@ -77,7 +77,7 @@ class Pedidos {
     $query = "INSERT INTO pedidos ($columnas) VALUES ($valores)";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/pedidos/index.php?st=1');
+      header('Location: /admin/pedidos?st=1');
     }
   }
 
@@ -112,7 +112,7 @@ class Pedidos {
     $query = "UPDATE pedidos SET $valores WHERE id = '" . self::$db->escape_string($this->id) . "' ";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/pedidos/index.php?st=2');
+      header('Location: /admin/pedidos?st=2');
     }
   }
   //Fin de actualizar
@@ -122,7 +122,7 @@ class Pedidos {
     $query = "DELETE FROM pedidos WHERE id = '" . self::$db->escape_string($this->id) . "'";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/pedidos/index.php?st=3');
+      header('Location: /admin/pedidos?st=3');
     }
   }
 

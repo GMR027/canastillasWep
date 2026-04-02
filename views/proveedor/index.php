@@ -1,0 +1,86 @@
+<?php
+use App\Pedidos;
+
+$anioFiltro         = (isset($_GET['anio'])         && $_GET['anio']         !== '') ? $_GET['anio']         : null;
+$estatusFiltro      = (isset($_GET['estatus'])      && $_GET['estatus']      !== '') ? $_GET['estatus']      : null;
+$diasTransitoFiltro = (isset($_GET['dias_transito']) && $_GET['dias_transito'] !== '') ? $_GET['dias_transito'] : null;
+
+$anioActual  = (int) date('Y');
+$anios       = range($anioActual, 2023);
+
+$estatusOpciones = [
+    1 => 'Pendiente',
+    2 => 'En tránsito',
+    3 => 'Entregado',
+    4 => 'Cancelado',
+    5 => 'Pagado'
+];
+
+$estadoTransitoOpciones = [
+    0 => 'Todos',
+    1 => '0 a 7 días',
+    2 => '9 a 15 días',
+    3 => 'Más de 15 días'
+];
+
+$paginacion = paginacion(10, Pedidos::contarPedidos($anioFiltro, $estatusFiltro, $diasTransitoFiltro));
+$pedidos = Pedidos::mostrarTodos($anioFiltro, $estatusFiltro, $diasTransitoFiltro, $paginacion['limite'], $paginacion['offset']);
+
+$mensaje = (int) ($_GET['st'] ?? 0);
+
+template('headerHTML');
+?>
+<body>
+<div class="navbar-admin">
+  <div class="titulo">
+    <img src="/src/img/LogoWeb.png" alt="">
+  </div>
+  <div class="navbar links-admin">
+    <a class="button" href="/logout">Cerrar Sesion</a>
+  </div>
+</div>
+
+<form action="" method="get" class="filtros contenedor">
+  <div>
+    <select class="filtro-grupo" name="anio" id="">
+      <option value="">--Filtro por año--</option>
+      <?php foreach($anios as $year): ?>
+        <option value="<?php echo $year; ?>" <?php echo ($anioFiltro == $year) ? 'selected' : ''; ?>>
+          <?php echo $year; ?>
+        </option>
+        <?php endforeach; ?>
+    </select>
+
+    <select class="filtro-grupo" name="estatus">
+      <option value="">--Filtro por Estatus--</option>
+      <?php foreach($estatusOpciones as $id => $nombre): ?>
+        <option value="<?php echo $id; ?>" <?php echo ($estatusFiltro == $id) ? 'selected' : ''; ?>>
+          <?php echo $nombre; ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+
+    <select class="filtro-grupo" name="dias_transito">
+      <option value="">--Filtro por Días en Tránsito--</option>
+      <?php foreach($estadoTransitoOpciones as $id => $nombre): ?>
+        <option value="<?php echo $id; ?>" <?php echo ($diasTransitoFiltro == $id) ? 'selected' : ''; ?>>
+          <?php echo $nombre; ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+  <div>
+    <button type="submit" class="button">Filtrar</button>
+    <a href="/proveedor" class="button">Limpiar Filtro</a>
+  </div>
+</form>
+
+<section>
+  <h1>Ultimos pedidos</h1>
+  <?php require TEMPLATES_URL . '/infoPedidos.php'; ?>
+  <?php require TEMPLATES_URL . '/paginacion.php'; ?>
+</section>
+
+<?php
+ template('footer');
+?>

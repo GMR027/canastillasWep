@@ -87,7 +87,7 @@ class Reportes {
     $query = "INSERT INTO reportes" . " ($columnas) VALUES ('$valores')";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/index.php?st=1');
+      header('Location: /admin?st=1');
     }
   }
 
@@ -132,7 +132,7 @@ class Reportes {
     $query = "UPDATE reportes SET $valores WHERE id = '" . self::$db->escape_string($this->id) . "' ";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/index.php?st=2');
+      header('Location: /admin?st=2');
     }
   }
   //Fin de actualizar
@@ -142,7 +142,7 @@ class Reportes {
     $query = "DELETE FROM reportes WHERE id = '" . self::$db->escape_string($this->id) . "'";
     $resultado = self::$db->query($query);
     if($resultado) {
-      header('Location: /admin/index.php?st=3');
+      header('Location: /admin?st=3');
     }
   }
 
