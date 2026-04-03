@@ -12,6 +12,13 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      # initContainers:
+      # - name: fix-volume-permissions
+      #   image: busybox
+      #   command: ["sh", "-c", "chmod -R 777 /data"]
+      #   volumeMounts:
+      #   - name: {{ .Values.volume.name }}
+      #     mountPath: /data
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
@@ -60,9 +67,8 @@ spec:
       {{- if .Values.volume }}
       volumes:
       - name: {{ .Values.volume.name }}
-        hostPath:
-          path: {{ .Values.volume.hostPath }}/{{ .Release.Namespace }}/media
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.name }}
       {{- end }}
       nodeSelector:
           {{- toYaml .Values.deployment.nodeSelector | nindent 12 }}

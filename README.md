@@ -33,7 +33,7 @@ La plataforma permite:
 ┌─────────────────────────────────────────────────────┐
 │        PHP App — Kubernetes Deployment (x3)          │
 │  Apache + PHP 8  │  ConfigMap con credenciales DB    │
-│  /var/www/public/image  ←→  hostPath /shared-master  │
+│  /var/www/public/image  ←→  PVC (ReadWriteMany)     │
 └────────────────────────┬────────────────────────────┘
                          │ mysql.canastillas.svc.cluster.local:3306
                          ▼
@@ -136,7 +136,7 @@ php -S localhost:8000
 - Nodo con label `nodeProjects=real-clients` para el app
 - Nodo con label `nodeName=master` para MySQL
 - cert-manager instalado con ClusterIssuer `letsencrypt-prod`
-- Volumen compartido en `/shared-master` en el nodo master (para imágenes y datos de MySQL)
+- Storage class habilitado en microk8s (ver sección abajo)
 - Imagen Docker publicada en `docker.io/christopherguzman/canastillas:latest`
 
 ### Crear el namespace
@@ -192,6 +192,64 @@ kubectl rollout restart deployment/canastillas -n canastillas
 docker build -t christopherguzman/canastillas:latest . && docker push christopherguzman/canastillas:latest && helm uninstall canastillas -n canastillas && helm install canastillas ./deployment --namespace canastillas
 ```
 
+### Habilitar Storage Class en MicroK8s
+
+La aplicación usa un PersistentVolumeClaim (PVC) con `ReadWriteMany` para compartir imágenes entre replicas. En microk8s se necesita habilitar un addon de almacenamiento.
+
+**Opcion 1: hostpath-storage (nodo unico)**
+
+```bash
+microk8s enable hostpath-storage
+```
+
+Esto crea el StorageClass `microk8s-hostpath`. Actualizar `values.yaml`:
+
+```yaml
+volume:
+  storageClassName: microk8s-hostpath
+  accessMode: ReadWriteOnce  # hostpath no soporta ReadWriteMany
+```
+
+> **Nota:** `hostpath-storage` solo funciona con un solo nodo. No soporta `ReadWriteMany`.
+
+**Opcion 2: NFS para multiples nodos (recomendado para replicas)**
+
+```bash
+# Habilitar el servidor NFS integrado de microk8s
+microk8s enable nfs
+
+# Verificar que el StorageClass fue creado
+microk8s kubectl get storageclass
+```
+
+Esto crea el StorageClass `nfs`. Actualizar `values.yaml`:
+
+```yaml
+volume:
+  storageClassName: nfs
+  accessMode: ReadWriteMany
+```
+
+### Copiar imagenes desde la PC de desarrollo al pod
+
+Para subir imagenes al volumen compartido `/var/www/public/image` dentro del pod:
+
+```bash
+# 1. Identificar el nombre del pod
+kubectl get pods -n canastillas
+
+# 2. Copiar un archivo
+kubectl cp /ruta/local/imagen.jpg canastillas/<nombre-del-pod>:/var/www/public/image/imagen.jpg
+
+# 3. Copiar una carpeta completa
+kubectl cp /ruta/local/imagenes/ canastillas/<nombre-del-pod>:/var/www/public/image/
+
+# 4. Copiar solo imagenes (jpg, jpeg, png, webp) de una carpeta
+find /ruta/local/imagenes/ -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -exec kubectl cp {} canastillas/<nombre-del-pod>:/var/www/public/image/ \;
+```
+
+> **Nota:** Solo es necesario copiar a un pod. Como todos comparten el mismo PVC, las imagenes estaran disponibles en todas las replicas.
+
 ### Desinstalar
 
 ```bash
@@ -234,7 +292,7 @@ The platform provides:
 ┌─────────────────────────────────────────────────────┐
 │        PHP App — Kubernetes Deployment (x3)          │
 │  Apache + PHP 8  │  ConfigMap with DB credentials   │
-│  /var/www/public/image  ←→  hostPath /shared-master  │
+│  /var/www/public/image  ←→  PVC (ReadWriteMany)     │
 └────────────────────────┬────────────────────────────┘
                          │ mysql.canastillas.svc.cluster.local:3306
                          ▼
@@ -337,7 +395,7 @@ php -S localhost:8000
 - A node labeled `nodeProjects=real-clients` for the app pods
 - A node labeled `nodeName=master` for MySQL
 - cert-manager installed with a `letsencrypt-prod` ClusterIssuer
-- Shared volume available at `/shared-master` on the master node (for images and MySQL data)
+- Storage class enabled in microk8s (see section below)
 - Docker image published to `docker.io/christopherguzman/canastillas:latest`
 
 ### Create the namespace
@@ -392,6 +450,64 @@ kubectl rollout restart deployment/canastillas -n canastillas
 ```bash
 docker build -t christopherguzman/canastillas:latest . && docker push christopherguzman/canastillas:latest && helm uninstall canastillas -n canastillas && helm install canastillas ./deployment --namespace canastillas
 ```
+
+### Enable Storage Class in MicroK8s
+
+The application uses a PersistentVolumeClaim (PVC) with `ReadWriteMany` to share uploaded images across replicas. You need to enable a storage addon in microk8s.
+
+**Option 1: hostpath-storage (single node)**
+
+```bash
+microk8s enable hostpath-storage
+```
+
+This creates the `microk8s-hostpath` StorageClass. Update `values.yaml`:
+
+```yaml
+volume:
+  storageClassName: microk8s-hostpath
+  accessMode: ReadWriteOnce  # hostpath does not support ReadWriteMany
+```
+
+> **Note:** `hostpath-storage` only works on a single node. It does not support `ReadWriteMany`.
+
+**Option 2: NFS for multiple nodes (recommended for replicas)**
+
+```bash
+# Enable the built-in NFS server in microk8s
+microk8s enable nfs
+
+# Verify the StorageClass was created
+microk8s kubectl get storageclass
+```
+
+This creates the `nfs` StorageClass. Update `values.yaml`:
+
+```yaml
+volume:
+  storageClassName: nfs
+  accessMode: ReadWriteMany
+```
+
+### Copy images from dev PC to k8s pod
+
+To upload images to the shared volume at `/var/www/public/image` inside the pod:
+
+```bash
+# 1. Get the pod name
+kubectl get pods -n canastillas
+
+# 2. Copy a single file
+kubectl cp /local/path/image.jpg canastillas/<pod-name>:/var/www/public/image/image.jpg
+
+# 3. Copy an entire folder
+kubectl cp /local/path/images/ canastillas/<pod-name>:/var/www/public/image/
+
+# 4. Copy only images (jpg, jpeg, png, webp) from a folder
+find /local/path/images/ -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -exec kubectl cp {} canastillas/<pod-name>:/var/www/public/image/ \;
+```
+
+> **Note:** You only need to copy to one pod. Since all replicas share the same PVC, the images will be available across all pods.
 
 ### Uninstall
 

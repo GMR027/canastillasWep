@@ -1,0 +1,15 @@
+{{- if .Values.volume }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.volume.name }}
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  accessModes:
+    - {{ .Values.volume.accessMode }}
+  storageClassName: {{ .Values.volume.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.volume.size }}
+{{- end }}

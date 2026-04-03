@@ -1,6 +1,5 @@
 <?php
 use App\Pedidos;
-use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
 $idValido = validarID($_GET['id'] ?? null, '/admin/pedidos');
@@ -15,17 +14,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
   if($_FILES['imagen']['tmp_name']) {
-    $manager = new ImageManager(Driver::class);
-    $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600, 'center');
+    $manager = ImageManager::gd();
+    $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
   }
 
   if(empty($errores)) {
     if(isset($imagen)) {
       $pedido->sincImage($nombreImagen);
       if(!is_dir(CARPETA_IMAGEN)) {
-        mkdir(CARPETA_IMAGEN);
+        mkdir(CARPETA_IMAGEN, 0755, true);
       }
-      $imagen->save(CARPETA_IMAGEN . $nombreImagen);
+      $imagen->toJpeg()->save(CARPETA_IMAGEN . $nombreImagen);
     }
     $pedido->guardar();
   }

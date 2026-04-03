@@ -2,8 +2,10 @@ replicaCount: 1
 
 volume:
   name: 'shared-volume'
-  hostPath: /shared-master
   mountPath: /var/www/public/image
+  storageClassName: ''
+  accessMode: ReadWriteMany
+  size: 8Gi
 
 config:
   ENV: production

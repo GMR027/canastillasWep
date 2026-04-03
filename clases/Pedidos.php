@@ -127,6 +127,7 @@ class Pedidos {
   }
 
   public function eliminarImagen() {
+    if(!$this->imagen) return;
     $existeArchivo = file_exists(CARPETA_IMAGEN . $this->imagen);
     if($existeArchivo) {
       unlink(CARPETA_IMAGEN . $this->imagen);
