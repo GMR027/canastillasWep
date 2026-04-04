@@ -35,10 +35,10 @@ class Pedidos {
     $this->imagen = $args['imagen'] ?? '';
     $this->comentarios = $args['comentarios'] ?? '';
     $this->embarque = $args['embarque'] ?? '';
-    $this->fechaEmbarque = $args['fechaEmbarque'] ?? null;
-    $this->fechaRecibo = $args['fechaRecibo'] ?? null;
-    $this->costoSinIva = $args['costoSinIva'] ?? null;
-    $this->costoConIva = $args['costoConIva'] ?? null;
+    $this->fechaEmbarque = !empty($args['fechaEmbarque']) ? $args['fechaEmbarque'] : null;
+    $this->fechaRecibo = !empty($args['fechaRecibo']) ? $args['fechaRecibo'] : null;
+    $this->costoSinIva = !empty($args['costoSinIva']) ? $args['costoSinIva'] : null;
+    $this->costoConIva = !empty($args['costoConIva']) ? $args['costoConIva'] : null;
   }
 
   //CRUD
