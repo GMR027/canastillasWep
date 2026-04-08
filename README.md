@@ -174,23 +174,18 @@ kubectl get ingress -n canastillas
 
 ### Actualizar la aplicación
 
-```bash
-# Construir y publicar nueva imagen
-docker build -t christopherguzman/canastillas:latest .
-docker push christopherguzman/canastillas:latest
-
-# Actualizar el chart
-helm upgrade canastillas ./deployment --namespace canastillas
-
-# O forzar restart para jalar latest
-kubectl rollout restart deployment/canastillas -n canastillas
-```
-
-### Build y despliegue en un solo comando
+Usa el script `deploy.sh` en la raíz del proyecto. Incrementa automáticamente la versión, construye y publica la imagen con esa versión, y despliega via Helm:
 
 ```bash
-docker build -t christopherguzman/canastillas:latest . && docker push christopherguzman/canastillas:latest && helm uninstall canastillas -n canastillas && helm install canastillas ./deployment --namespace canastillas
+./deploy.sh
 ```
+
+El script realiza los siguientes pasos:
+1. Lee el número de versión actual de `.version` (empieza en 1 si no existe).
+2. Incrementa la versión y la guarda en `.version`.
+3. Construye la imagen como `christopherguzman/canastillas:<version>`.
+4. Publica la imagen en Docker Hub.
+5. Ejecuta `helm upgrade --install` pasando el tag de versión.
 
 ### Habilitar Storage Class en MicroK8s
 
@@ -433,23 +428,18 @@ kubectl get ingress -n canastillas
 
 ### Update the application
 
-```bash
-# Build and push a new image
-docker build -t christopherguzman/canastillas:latest .
-docker push christopherguzman/canastillas:latest
-
-# Upgrade the Helm release
-helm upgrade canastillas ./deployment --namespace canastillas
-
-# Or force a rolling restart to pull the latest image
-kubectl rollout restart deployment/canastillas -n canastillas
-```
-
-### Build and deploy in one command
+Use the `deploy.sh` script at the project root. It auto-increments the version, builds and pushes the tagged image, then deploys via Helm:
 
 ```bash
-docker build -t christopherguzman/canastillas:latest . && docker push christopherguzman/canastillas:latest && helm uninstall canastillas -n canastillas && helm install canastillas ./deployment --namespace canastillas
+./deploy.sh
 ```
+
+The script performs these steps:
+1. Reads the current version number from `.version` (starts at 1 if the file does not exist).
+2. Increments the version and writes it back to `.version`.
+3. Builds the image as `christopherguzman/canastillas:<version>`.
+4. Pushes the image to Docker Hub.
+5. Runs `helm upgrade --install` passing the version tag.
 
 ### Enable Storage Class in MicroK8s
 

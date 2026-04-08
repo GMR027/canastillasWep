@@ -7,3 +7,4 @@ mysql/
 package-lock.json
 gulpfile.js
 netlify.toml
+backup-images/

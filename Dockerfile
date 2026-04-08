@@ -34,6 +34,13 @@ COPY . .
 # Install PHP dependencies (production, no dev tools)
 RUN composer install --no-dev --optimize-autoloader
 
+# Increase PHP upload limits
+RUN { \
+    echo 'upload_max_filesize = 70M'; \
+    echo 'post_max_size = 75M'; \
+    echo 'memory_limit = 256M'; \
+} > /usr/local/etc/php/conf.d/uploads.ini
+
 # Ensure upload directory exists with correct ownership
 RUN mkdir -p public/image \
     && chown -R www-data:www-data /var/www \
