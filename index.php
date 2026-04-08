@@ -33,6 +33,7 @@ $router->get('/admin/pedidos',            'views/admin/pedidos/index.php',    's
 $router->post('/admin/pedidos',           'views/admin/pedidos/index.php',    'soloAdmin');
 $router->get('/admin/pedidos/crear',      'views/admin/pedidos/crear.php',    'soloAdmin');
 $router->post('/admin/pedidos/crear',     'views/admin/pedidos/crear.php',    'soloAdmin');
+$router->get('/admin/pedidos/detalle',    'views/admin/pedidos/detallePedido.php', 'soloAdmin');
 $router->get('/admin/pedidos/editar',     'views/admin/pedidos/editar.php',   'soloAdmin');
 $router->post('/admin/pedidos/editar',    'views/admin/pedidos/editar.php',   'soloAdmin');
 

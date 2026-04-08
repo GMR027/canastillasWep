@@ -15,6 +15,7 @@
         <th class="hMovilTablas">Días en Tránsito</th>
         <th class="hMovilTablas">Imagen</th>
         <th class="hMovilTablas">Comentarios</th>
+        <th>Detalle</th>
         <?php if((int) $_SESSION['rol'] === 1): ?>
         <th class="hMovilTablas">Acciones</th>
         <?php endif; ?>
@@ -57,6 +58,9 @@
           <img src="/public/image/<?php echo $pedido->imagen; ?>" alt="Foto de pedido" class="foto-entrega">
         </td>
         <td class="hMovilTablas"><?php echo escaparValores($pedido->comentarios); ?></td>
+        <td>
+          <a href="/admin/pedidos/detalle?id=<?php echo $pedido->id; ?>" class="button">Detalle</a>
+        </td>
         <?php if((int) $_SESSION['rol'] === 1): ?>
         <td class="hMovilTablas">
           <div class="acciones">

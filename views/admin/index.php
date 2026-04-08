@@ -41,7 +41,7 @@ template('headerHTML');
     <a class="button" href="/admin/pedidos">Pedido</a>
     <a class="button hMovil" href="/admin/usuarios">Usuario</a>
     <a class="button hMovil" href="/admin/productos">Productos</a>
-    <a class="button" href="/logout">Cerrar Sesion</a>
+    <a class="button hMovil" href="/logout">Cerrar Sesion</a>
   </div>
 </div>
 
@@ -58,7 +58,7 @@ template('headerHTML');
 </section>
 
 <form action="" method="get" class="filtros contenedor">
-  <div>
+  <div class="hMovil">
     <select class="filtro-grupo" name="anio" id="">
     <option value="">--Filtro por año--</option>
     <?php foreach($anios as $year): ?>
@@ -87,7 +87,7 @@ template('headerHTML');
     </select>
   </div>
 
-  <div>
+  <div class="hMovil">
     <button type="submit" class="button">Filtrar</button>
     <a href="/admin" class="button">Limpiar Filtro</a>
   </div>
