@@ -41,29 +41,21 @@ spec:
           exec:
             command:
             - test
-            - -f
-            - /var/www/public/image/.healthy
+            - -d
+            - {{ .Values.volume.mountPath }}
           failureThreshold: 30
           periodSeconds: 10
         livenessProbe:
           exec:
             command:
             - test
-            - -f
-            - /var/www/public/image/.healthy
-          periodSeconds: 10
+            - -d
+            - {{ .Values.volume.mountPath }}
         {{- if .Values.volume }}
         volumeMounts:
         - name: {{ .Values.volume.name }}
           mountPath: {{ .Values.volume.mountPath }}
         {{- end }}
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - "sh"
-                - "-c"
-                - "touch {{ .Values.volume.mountPath }}/.healthy"
       {{- if .Values.volume }}
       volumes:
       - name: {{ .Values.volume.name }}

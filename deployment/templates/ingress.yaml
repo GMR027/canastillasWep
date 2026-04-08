@@ -5,6 +5,7 @@ metadata:
   name: {{ .Chart.Name }}
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-body-size: "70m"
 spec:
   tls:
   - hosts:
