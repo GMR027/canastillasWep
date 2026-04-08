@@ -5,6 +5,11 @@ NAMESPACE="canastillas"
 REMOTE_PATH="/var/www/public/image"
 BACKUP_DIR="backup-images"
 
+if [ ! -d "$BACKUP_DIR" ] || [ -z "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
+  echo "ERROR: No backup found in '${BACKUP_DIR}'."
+  exit 1
+fi
+
 echo ">>> Finding a running pod in namespace '${NAMESPACE}'..."
 POD=$(kubectl get pods -n "$NAMESPACE" \
   -l app=canastillas \
@@ -17,9 +22,8 @@ if [ -z "$POD" ]; then
 fi
 
 echo ">>> Using pod: ${POD}"
-mkdir -p "$BACKUP_DIR"
+echo ">>> Restoring ${BACKUP_DIR}/ -> ${NAMESPACE}/${POD}:${REMOTE_PATH}"
 
-echo ">>> Copying ${REMOTE_PATH} -> ${BACKUP_DIR}/"
-kubectl cp "${NAMESPACE}/${POD}:${REMOTE_PATH}/." "$BACKUP_DIR"
+kubectl cp "${BACKUP_DIR}/." "${NAMESPACE}/${POD}:${REMOTE_PATH}"
 
-echo ">>> Backup complete: ${BACKUP_DIR}"
+echo ">>> Restore complete: ${BACKUP_DIR} -> ${REMOTE_PATH}"
