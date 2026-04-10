@@ -29,12 +29,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-$estatusPago = [
-  0 => 'Pendiente de pago',
-  1 => 'Pagado'
-];
-
-
 
 
 template('headerHTML');
