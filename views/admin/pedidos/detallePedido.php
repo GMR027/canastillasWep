@@ -68,6 +68,10 @@ template('headerHTML');
   </section>
 <?php endif; ?>
 
+<section class="contenedor flex-center">
+  <a href="/admin/pedidos/editar?id=<?php echo $pedido->id; ?>" class="button editar hTablet">Editar </a>
+</section>
+
 
 
 

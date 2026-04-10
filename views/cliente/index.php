@@ -66,6 +66,7 @@ template('headerHTML');
         <th class="info">Producto</th>
         <th>Cantidad</th>
         <th>Foto Entrega</th>
+        <th>Estatus</th>
         <th class="hMovilTablas">Ver Reporte</th>
       </tr>
     </thead>
@@ -78,6 +79,16 @@ template('headerHTML');
         <td><?php echo $reporte->cantidad; ?></td>
         <td class="foto-entrega-container">
           <img src="/public/image/<?php echo $reporte->imagen; ?>" alt="Foto de entrega" class="foto-entrega">
+        </td>
+        <td class="hMovilTablas">
+          <?php
+            $estatusPago = [
+              0 => ['texto' => 'Pendiente de pago', 'clase' => 'pendiente-pago'],
+              1 => ['texto' => 'Pagado', 'clase' => 'pagado']
+            ];
+            $info = $estatusPago[$reporte->estatus] ?? ['texto' => 'Pagado', 'clase' => 'pagado'];
+          ?>
+          <span class="<?php echo $info['clase']; ?>"><?php echo $info['texto']; ?></span>
         </td>
         <td class="hMovilTablas">
           <a class="button" href="/cliente/detalle?id=<?php echo $reporte->id; ?>">Reporte</a>

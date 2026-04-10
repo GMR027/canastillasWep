@@ -45,6 +45,9 @@ $router->post('/admin/usuarios/crear',    'views/admin/usuarios/crear.php',   's
 $router->get('/admin/usuarios/editar',    'views/admin/usuarios/editar.php',  'soloAdmin');
 $router->post('/admin/usuarios/editar',   'views/admin/usuarios/editar.php',  'soloAdmin');
 
+// Admin — agenda
+$router->get('/admin/agenda/index',       'views/admin/agenda/index.php',  'soloAdmin');
+
 // Cliente
 $router->get('/cliente',          'views/cliente/index.php',   'soloCliente');
 $router->get('/cliente/detalle',  'views/cliente/detalle.php', 'soloCliente');

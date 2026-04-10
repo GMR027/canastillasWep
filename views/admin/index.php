@@ -28,6 +28,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: /admin');
   }
 }
+
+$estatusPago = [
+  0 => 'Pendiente de pago',
+  1 => 'Pagado'
+];
+
+
+
+
 template('headerHTML');
 ?>
 
@@ -41,6 +50,7 @@ template('headerHTML');
     <a class="button" href="/admin/pedidos">Pedido</a>
     <a class="button hMovil" href="/admin/usuarios">Usuario</a>
     <a class="button hMovil" href="/admin/productos">Productos</a>
+    <a class="button hMovil" href="/admin/agenda/index">Agenda</a>
     <a class="button hMovil" href="/logout">Cerrar Sesion</a>
   </div>
 </div>
@@ -104,6 +114,7 @@ template('headerHTML');
         <th class="info hMovilTablas">Producto</th>
         <th class="hMovilTablas">Cantidad</th>
         <th class="hMovilTablas">Imagen</th>
+        <th class="hMovilTablas">Estatus</th>
         <th>Reporte</th>
         <th>Acciones</th>
       </tr>
@@ -118,6 +129,16 @@ template('headerHTML');
           <td class="hMovilTablas"><?php echo $reporte->cantidad; ?></td>
           <td class="foto-entrega-container hMovilTablas">
             <img src="/public/image/<?php echo $reporte->imagen; ?>" alt="Foto de entrega" class="foto-entrega">
+          </td>
+          <td class="hMovilTablas">
+            <?php
+              $estatusPago = [
+                0 => ['texto' => 'Pendiente de pago', 'clase' => 'pendiente-pago'],
+                1 => ['texto' => 'Pagado', 'clase' => 'pagado']
+              ];
+              $info = $estatusPago[$reporte->estatus] ?? ['texto' => 'Pagado', 'clase' => 'pagado'];
+            ?>
+            <span class="<?php echo $info['clase']; ?>"><?php echo $info['texto']; ?></span>
           </td>
           <td class="hMovilTablas acciones">
             <a class="button" href="/admin/reportes/detalle?id=<?php echo $reporte->id; ?>">Reporte</a>

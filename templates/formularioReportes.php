@@ -45,6 +45,12 @@
         </div>
       <?php endif; ?>
 
+      <label for="estatus">Estatus de pago</label>
+      <select name="estatus" id="estatus">
+        <option value="0" <?php echo $reporte->estatus === '0' ? 'selected' : ''; ?>>Pendiente de pago</option>
+        <option value="1" <?php echo $reporte->estatus === '1' ? 'selected' : ''; ?>>Pagado</option>
+      </select>
+
       <label for="comentarios">Comentarios</label>
       <textarea id="comentarios" name="comentarios"><?php echo escaparValores($reporte->comentarios); ?></textarea>
     </fieldset>

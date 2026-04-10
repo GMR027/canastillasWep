@@ -148,6 +148,12 @@ li {
   }
 }
 
+.hTablet {
+  @include m.tablet {
+    display: none;
+  }
+}
+
 
 .flex-center {
   display: flex;
@@ -168,4 +174,8 @@ li {
       margin: .5rem 0;
     } 
   }
+}
+
+.tbody-margin tr td {
+  padding: 1.5rem 0;
 }

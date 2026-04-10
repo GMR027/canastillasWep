@@ -137,7 +137,7 @@ php -S localhost:8000
 - Nodo con label `nodeName=master` para MySQL
 - cert-manager instalado con ClusterIssuer `letsencrypt-prod`
 - Storage class habilitado en microk8s (ver sección abajo)
-- Imagen Docker publicada en `docker.io/christopherguzman/canastillas:latest`
+- Imagen Docker publicada en `docker.io/gmr27/canastillas:latest`
 
 ### Crear el namespace
 
@@ -183,7 +183,7 @@ Usa el script `deploy.sh` en la raíz del proyecto. Incrementa automáticamente 
 El script realiza los siguientes pasos:
 1. Lee el número de versión actual de `.version` (empieza en 1 si no existe).
 2. Incrementa la versión y la guarda en `.version`.
-3. Construye la imagen como `christopherguzman/canastillas:<version>`.
+3. Construye la imagen como `gmr27/canastillas:<version>`.
 4. Publica la imagen en Docker Hub.
 5. Ejecuta `helm upgrade --install` pasando el tag de versión.
 
@@ -391,7 +391,7 @@ php -S localhost:8000
 - A node labeled `nodeName=master` for MySQL
 - cert-manager installed with a `letsencrypt-prod` ClusterIssuer
 - Storage class enabled in microk8s (see section below)
-- Docker image published to `docker.io/christopherguzman/canastillas:latest`
+- Docker image published to `docker.io/gmr27/canastillas:latest`
 
 ### Create the namespace
 
@@ -437,7 +437,7 @@ Use the `deploy.sh` script at the project root. It auto-increments the version, 
 The script performs these steps:
 1. Reads the current version number from `.version` (starts at 1 if the file does not exist).
 2. Increments the version and writes it back to `.version`.
-3. Builds the image as `christopherguzman/canastillas:<version>`.
+3. Builds the image as `gmr27/canastillas:<version>`.
 4. Pushes the image to Docker Hub.
 5. Runs `helm upgrade --install` passing the version tag.
 

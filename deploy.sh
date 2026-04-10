@@ -2,7 +2,7 @@
 set -e
 
 VERSION_FILE=".version"
-REGISTRY="christopherguzman"
+REGISTRY="gmr27"
 REPOSITORY="canastillas"
 NAMESPACE="canastillas"
 HELM_RELEASE="canastillas"

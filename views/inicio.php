@@ -1,3 +1,7 @@
+<?
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +27,7 @@
       </div>
       <div class="titulo">
         <img src="src/img/LogoWeb.png" alt="">
-        <p>La Paz, Baja califonria Sur </p>
+        <p>La Paz, Baja California Sur </p>
       </div>
     </div>
 

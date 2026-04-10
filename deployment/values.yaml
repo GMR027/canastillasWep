@@ -15,7 +15,7 @@ config:
   DB_PASSWORD: canastillas
 
 image:
-  registry: christopherguzman
+  registry: gmr27
   repository: canastillas
   tag: latest
   pullPolicy: Always

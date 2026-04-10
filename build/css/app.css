@@ -453,6 +453,12 @@ li svg {
   }
 }
 
+@media (min-width: 768px) {
+  .hTablet {
+    display: none;
+  }
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -473,6 +479,10 @@ li svg {
 .acciones .button {
   width: 10rem;
   margin: 0.5rem 0;
+}
+
+.tbody-margin tr td {
+  padding: 1.5rem 0;
 }
 
 .video {
@@ -939,6 +949,27 @@ li svg {
 }
 .dias-transito.transito-lento {
   background-color: #c62828;
+}
+
+.pendiente-pago {
+  background-color: #ff3d00;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+}
+
+.pagado {
+  background-color: #1b5e20;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+}
+
+.desconocido {
+  background-color: #9e9e9e;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
 }
 
 .foto-entrega-detalle-container {
