@@ -66,18 +66,7 @@
           <div class="acciones">
             <a class="button editar" href="/admin/pedidos/editar?id=<?php echo $pedido->id; ?>">Editar</a>
             
-            <button type="button" class="button eliminar hMovil" onclick="abrirModal(<?php echo $pedido->id?>)">Eliminar</button> 
-            <div id="modal-overlay" style="display: none;">
-              <div id="modal-box"> 
-                <p>¿Estás seguro de que deseas eliminar este pedido?</p> 
-                <form action="" id="form-eliminar" method="POST">
-                  <input type="hidden" name="id" id="modal-id" value=""> 
-                  <button type="button" onclick="cerrarModal()">Cancelar</button>  
-                  <button type="submit">Aceptar</button>
-                </form>
-              </div>
-            </div>
-
+            <button type="button" class="button eliminar hMovil" data-id="<?php echo $pedido->id; ?>">Eliminar</button>
           </div>
         </td>
         <?php endif; ?>
@@ -85,3 +74,14 @@
       <?php endforeach; ?>
     </tbody>
   </table>
+
+<div id="modal-overlay" style="display:none;">
+  <div id="modal-box">
+    <p>¿Estás seguro de que deseas eliminar este pedido?</p>
+    <form action="" id="form-eliminar" method="POST">
+      <input type="hidden" name="id" id="modal-id" value="">
+      <button type="button" id="btn-cancelar">Cancelar</button>
+      <button type="submit">Aceptar</button>
+    </form>
+  </div>
+</div>

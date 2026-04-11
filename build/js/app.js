@@ -68,12 +68,12 @@ if (costoSinIva) {
   });
 }
 
-
-  function abrirModal(id) { //Funcion para abrir el modal y mostrar la informacion del usuario
-    document.getElementById('modal-id').value = id; //Asignamos el ID del usuario al campo oculto del modal para que pueda ser utilizado en el formulario de eliminacion
-    document.getElementById('modal-overlay').style.display = 'flex'; //Mostramos el modal cambiando su estilo de display a flex
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('eliminar')) {
+    document.getElementById('modal-id').value = e.target.getAttribute('data-id');
+    document.getElementById('modal-overlay').style.display = 'flex';
   }
-
-  function cerrarModal() {
-    document.getElementById('modal-overlay').style.display = 'none'; //Ocultamos el modal cambiando su estilo de display a none
+  if (e.target.id === 'btn-cancelar') {
+    document.getElementById('modal-overlay').style.display = 'none';
   }
+});

@@ -142,18 +142,7 @@ template('headerHTML');
             <div class="acciones">
                 <a class="button editar" href="/admin/reportes/editar?id=<?php echo $reporte->id; ?>">Editar</a>
 
-              <button type="button" class="button eliminar hMovil" onclick="abrirModal(<?php echo $reporte->id?>)">Eliminar</button> <!-- Boton para eliminar el reporte, al hacer click se llama a la funcion abrirModal pasando el ID del reporte como parametro -->
-              <div id="modal-overlay" style="display: none;"> <!-- Contenedor del modal, inicialmente oculto con display: none -->
-                <div id="modal-box"> <!-- Contenedor del contenido del modal -->
-                  <p>¿Estás seguro de que deseas eliminar este reporte?</p> <!-- Mensaje de confirmacion para el usuario -->
-                  <form action="" id="form-eliminar" method="POST"> <!-- Formulario para enviar la solicitud de eliminacion, el action esta vacio porque se enviara a la misma pagina -->
-                    <input type="hidden" name="id" id="modal-id" value=""> <!-- Campo oculto para almacenar el ID del reporte que se desea eliminar, este valor se asignara dinamicamente cuando se abra el modal -->
-                    <button type="button" onclick="cerrarModal()">Cancelar</button>   <!-- Boton para cancelar la eliminacion, al hacer click se llama a la funcion cerrarModal para ocultar el modal -->
-                    <button type="submit">Aceptar</button> <!-- Boton para confirmar la eliminacion, al hacer click se envia el formulario y se procesa la eliminacion en el servidor -->
-                  </form>
-                </div>
-              </div>
-              
+              <button type="button" class="button eliminar hMovil" data-id="<?php echo $reporte->id; ?>">Eliminar</button>
             </div>
           </td>
         </tr>
@@ -163,6 +152,16 @@ template('headerHTML');
   <?php require TEMPLATES_URL . '/paginacion.php'; ?>
 </section>
 
+<div id="modal-overlay" style="display:none;">
+  <div id="modal-box">
+    <p>¿Estás seguro de que deseas eliminar este reporte?</p>
+    <form action="" id="form-eliminar" method="POST">
+      <input type="hidden" name="id" id="modal-id" value="">
+      <button type="button" id="btn-cancelar">Cancelar</button>
+      <button type="submit">Aceptar</button>
+    </form>
+  </div>
+</div>
 
 <?php
  template('footer');

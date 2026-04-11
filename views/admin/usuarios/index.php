@@ -80,17 +80,7 @@ template('headerHTML');
             <div class="acciones">
               <a class="button editar" href="/admin/usuarios/editar?id=<?php echo $usuario->id; ?>">Editar</a>
               
-               <button type="button" class="button eliminar hMovil" onclick="abrirModal(<?php echo $usuario->id?>)">Eliminar</button> 
-              <div id="modal-overlay" style="display: none;">
-                <div id="modal-box"> 
-                  <p>¿Estás seguro de que deseas eliminar este usuario?</p> 
-                  <form action="" id="form-eliminar" method="POST">
-                    <input type="hidden" name="id" id="modal-id" value=""> 
-                    <button type="button" onclick="cerrarModal()">Cancelar</button>  
-                    <button type="submit">Aceptar</button>
-                  </form>
-                </div>
-              </div>
+              <button type="button" class="button eliminar hMovil" data-id="<?php echo $usuario->id; ?>">Eliminar</button>
             </div>
           </td>
         </tr>
@@ -100,6 +90,16 @@ template('headerHTML');
   <?php require TEMPLATES_URL . '/paginacion.php'; ?>
 </section>
 
+<div id="modal-overlay" style="display:none;">
+  <div id="modal-box">
+    <p>¿Estás seguro de que deseas eliminar este usuario?</p>
+    <form action="" id="form-eliminar" method="POST">
+      <input type="hidden" name="id" id="modal-id" value="">
+      <button type="button" id="btn-cancelar">Cancelar</button>
+      <button type="submit">Aceptar</button>
+    </form>
+  </div>
+</div>
 
 <?php
  template('footer');
