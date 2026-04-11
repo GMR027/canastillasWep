@@ -65,10 +65,19 @@
         <td class="hMovilTablas">
           <div class="acciones">
             <a class="button editar" href="/admin/pedidos/editar?id=<?php echo $pedido->id; ?>">Editar</a>
-            <form action="" method="POST">
-              <input type="hidden" name="id" value="<?php echo $pedido->id; ?>">
-              <button type="submit" class="button eliminar">Eliminar</button>
-            </form>
+            
+            <button type="button" class="button eliminar hMovil" onclick="abrirModal(<?php echo $pedido->id?>)">Eliminar</button> 
+            <div id="modal-overlay" style="display: none;">
+              <div id="modal-box"> 
+                <p>¿Estás seguro de que deseas eliminar este pedido?</p> 
+                <form action="" id="form-eliminar" method="POST">
+                  <input type="hidden" name="id" id="modal-id" value=""> 
+                  <button type="button" onclick="cerrarModal()">Cancelar</button>  
+                  <button type="submit">Aceptar</button>
+                </form>
+              </div>
+            </div>
+
           </div>
         </td>
         <?php endif; ?>

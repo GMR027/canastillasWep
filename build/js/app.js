@@ -67,3 +67,13 @@ if (costoSinIva) {
     }
   });
 }
+
+
+  function abrirModal(id) { //Funcion para abrir el modal y mostrar la informacion del usuario
+    document.getElementById('modal-id').value = id; //Asignamos el ID del usuario al campo oculto del modal para que pueda ser utilizado en el formulario de eliminacion
+    document.getElementById('modal-overlay').style.display = 'flex'; //Mostramos el modal cambiando su estilo de display a flex
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-overlay').style.display = 'none'; //Ocultamos el modal cambiando su estilo de display a none
+  }

@@ -14,11 +14,12 @@ template('headerHTML');
 </div>
 <h1>Listado de usuarios</h1>
 
-<table class="tablas">
+<table class="tablas contenedor">
   <thead>
     <tr>
       <th>Nombre</th>
       <th>Telefono</th>
+      <th>WhatsApp</th>
     </tr>
   </thead>
   <tbody class="tbody-margin">
@@ -26,6 +27,7 @@ template('headerHTML');
     <tr>
       <td><?php echo $usuario->nombre; ?></td>
       <td><a href="tel:<?php echo $usuario->telefono; ?>" class="button">Llamar</a></td>
+      <td><a href="https://wa.me/<?php echo $usuario->telefono; ?>" class="button">WhatsApp</a></td>
     </tr>
     <?php endforeach; ?>
   </tbody>
