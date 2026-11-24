@@ -10,7 +10,7 @@ namespace Model;
  */
 class Compra extends ModeloDB
 {
-    public const POR_PAGINA = 10;
+    public const POR_PAGINA = 15;
 
     public const FILTROS = [
         'todas' => 'Todas',
@@ -30,6 +30,7 @@ class Compra extends ModeloDB
     public bool $aplica_iva = true;
     public float $iva = 0;
     public float $total = 0;
+    public float $cobrado = 0;
     public ?string $condiciones_envio = null;
     public ?string $condiciones_compra = null;
     public ?string $comentarios = null;
@@ -95,6 +96,12 @@ class Compra extends ModeloDB
                     v.subtotal, v.descuento, v.aplica_iva, v.iva, v.total,
                     v.condiciones_envio, v.condiciones_compra, v.comentarios,
                     v.entrega_estado, v.entrega_fecha,
+                    COALESCE((SELECT SUM(ROUND(c.importe * 100))
+                                FROM ingresos i
+                                JOIN cobros c ON c.ingreso_id = i.id
+                               WHERE i.venta_id = v.id
+                                 AND i.estado = 'vigente'
+                                 AND c.estado = 'vigente'), 0) / 100 AS cobrado,
                     (SELECT COUNT(*) FROM venta_detalles d WHERE d.venta_id = v.id) AS renglones,
                     (SELECT COUNT(*) FROM entregas e WHERE e.venta_id = v.id) AS total_entregas,
                     (SELECT COUNT(*) FROM entrega_fotos f
@@ -125,6 +132,12 @@ class Compra extends ModeloDB
                     v.subtotal, v.descuento, v.aplica_iva, v.iva, v.total,
                     v.condiciones_envio, v.condiciones_compra, v.comentarios,
                     v.entrega_estado, v.entrega_fecha,
+                    COALESCE((SELECT SUM(ROUND(c.importe * 100))
+                                FROM ingresos i
+                                JOIN cobros c ON c.ingreso_id = i.id
+                               WHERE i.venta_id = v.id
+                                 AND i.estado = 'vigente'
+                                 AND c.estado = 'vigente'), 0) / 100 AS cobrado,
                     (SELECT COUNT(*) FROM venta_detalles d WHERE d.venta_id = v.id) AS renglones,
                     (SELECT COUNT(*) FROM entregas e WHERE e.venta_id = v.id) AS total_entregas,
                     (SELECT COUNT(*) FROM entrega_fotos f
@@ -189,6 +202,33 @@ class Compra extends ModeloDB
             'entregada' => 'Entregada',
             default => 'En proceso',
         };
+    }
+
+    /** Estatus de pago: pagada, parcial, pendiente o no aplica (venta cancelada). */
+    public function pagoEstadoClave(): string
+    {
+        if ($this->cancelada()) {
+            return 'no-aplica';
+        }
+        if ($this->cobrado >= $this->total - 0.01) {
+            return 'pagada';
+        }
+        return $this->cobrado > 0 ? 'parcial' : 'pago-pendiente';
+    }
+
+    public function pagoEtiqueta(): string
+    {
+        return match ($this->pagoEstadoClave()) {
+            'pagada' => 'Pagada',
+            'parcial' => 'Parcial',
+            'no-aplica' => 'No aplica',
+            default => 'Pendiente',
+        };
+    }
+
+    public function saldoPendiente(): float
+    {
+        return max(0, round($this->total - $this->cobrado, 2));
     }
 
     /** ¿La foto pertenece a una compra de este cliente? */

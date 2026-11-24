@@ -106,7 +106,7 @@ COTIZACIONES_URL=http://cotizaciones.cotizaciones.svc.cluster.local
 PORTAL_FOTOS_SECRETO=...
 ```
 
-El usuario MySQL `portal_canastillas` necesita lectura sobre productos, categorías, ventas, entregas y fotos. Se puede crear con el script de cotizaciones (incluye permisos de portal que este sitio todavía no usa):
+El usuario MySQL `portal_canastillas` necesita lectura sobre productos, categorías, ventas, venta_detalles, ingresos, cobros, entregas, entrega_renglones y fotos. Se puede crear con el script de cotizaciones (incluye permisos de portal que este sitio todavía no usa):
 
 ```bash
 PORTAL_DB_USER=portal_canastillas \

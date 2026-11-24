@@ -68,6 +68,7 @@ include __DIR__ . '/../templates/cuenta-header.php';
           <h2 class="tarjeta__titulo">Resumen</h2>
           <dl class="datos">
             <div><dt>Estado</dt><dd><?php include __DIR__ . '/../templates/insignia-estado.php'; ?></dd></div>
+            <div><dt>Estatus de Pago</dt><dd><?php include __DIR__ . '/../templates/insignia-pago.php'; ?><?php if (!$compra->cancelada() && $compra->saldoPendiente() > 0): ?><br><small>Saldo: <?= dinero($compra->saldoPendiente()) ?></small><?php endif; ?></dd></div>
             <div><dt>Folio</dt><dd><?= s($compra->folio) ?></dd></div>
             <div><dt>Fecha</dt><dd><?= s(fecha($compra->fecha)) ?></dd></div>
             <div><dt>Productos</dt><dd><?= (int) $compra->renglones ?></dd></div>

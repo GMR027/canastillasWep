@@ -168,12 +168,19 @@ $pasos = [
     <ul class="entregas-galeria__lista" data-galeria aria-label="Fotos de entregas recientes">
       <?php foreach ($galeria as $fotoId): ?>
         <li class="entregas-galeria__item">
-          <img src="/img/entregas/<?= (int) $fotoId ?>" alt="Entrega de Canastillas de la Baja" loading="lazy" decoding="async">
+          <button class="entregas-galeria__boton" type="button" data-abrir-foto aria-label="Ampliar foto de entrega">
+            <img src="/img/entregas/<?= (int) $fotoId ?>" alt="Entrega de Canastillas de la Baja" loading="lazy" decoding="async">
+          </button>
         </li>
       <?php endforeach; ?>
     </ul>
   </div>
 </section>
+
+<dialog class="modal modal--foto" id="foto-galeria" aria-label="Foto de entrega">
+  <button class="modal__cerrar" type="button" data-cerrar-modal aria-label="Cerrar"><?= icono('cerrar') ?></button>
+  <img id="foto-galeria-img" src="" alt="Foto de entrega de Canastillas de la Baja">
+</dialog>
 <?php endif; ?>
 
 <section class="seccion seccion--compacta cta-final">

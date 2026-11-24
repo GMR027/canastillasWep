@@ -5,10 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
   galeria();
 });
 
-// Galeria de entregas: sin cursor (pantallas tactiles), el toque expande la franja.
+// Galeria de entregas: abre la foto en grande y, en tactil, expande la franja.
 function galeria() {
   const lista = document.querySelector('[data-galeria]');
-  if (!lista || window.matchMedia('(hover: hover)').matches) return;
+  if (!lista) return;
+
+  const modal = document.getElementById('foto-galeria');
+  const imagenModal = document.getElementById('foto-galeria-img');
+
+  if (modal && imagenModal) {
+    lista.querySelectorAll('[data-abrir-foto]').forEach((boton) => {
+      boton.addEventListener('click', () => {
+        const imagen = boton.querySelector('img');
+        if (!imagen) return;
+        imagenModal.src = imagen.getAttribute('src') || '';
+        imagenModal.alt = imagen.getAttribute('alt') || 'Foto de entrega';
+        modal.showModal();
+        document.body.classList.add('menu-abierto');
+      });
+    });
+  }
+
+  if (window.matchMedia('(hover: hover)').matches) return;
 
   lista.addEventListener('click', (evento) => {
     const item = evento.target.closest('.entregas-galeria__item');

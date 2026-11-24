@@ -61,6 +61,7 @@ include __DIR__ . '/../templates/cuenta-header.php';
             <span role="columnheader">Fecha</span>
             <span role="columnheader">Productos</span>
             <span role="columnheader">Estado</span>
+            <span role="columnheader">Estatus de Pago</span>
             <span role="columnheader" class="a-la-derecha">Total</span>
             <span role="columnheader"><span class="sr-only">Detalle</span></span>
           </div>
@@ -70,11 +71,17 @@ include __DIR__ . '/../templates/cuenta-header.php';
               <span role="cell" class="tabla-pedidos__fecha" data-etiqueta="Fecha"><?= s(fecha($compra->fecha)) ?></span>
               <span role="cell" class="tabla-pedidos__productos" data-etiqueta="Productos"><?= (int) $compra->renglones ?></span>
               <span role="cell" class="tabla-pedidos__estado"><?php include __DIR__ . '/../templates/insignia-estado.php'; ?></span>
+              <span role="cell" class="tabla-pedidos__pago" data-etiqueta="Estatus de Pago"><?php include __DIR__ . '/../templates/insignia-pago.php'; ?></span>
               <span role="cell" class="a-la-derecha tabla-pedidos__total"><?= dinero($compra->total) ?></span>
               <span role="cell" class="tabla-pedidos__ir"><?= icono('flecha') ?></span>
             </a>
           <?php endforeach; ?>
         </div>
+
+        <p class="paginacion__resumen">
+          Mostrando <?= count($lista['compras']) ?> de <?= (int) $lista['total'] ?> compras
+          · Página <?= (int) $lista['pagina'] ?> de <?= (int) $lista['paginas'] ?>
+        </p>
 
         <?php if ($lista['paginas'] > 1): ?>
           <nav class="paginacion" aria-label="Páginas">
