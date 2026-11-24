@@ -4,18 +4,19 @@ kind: Ingress
 metadata:
   name: {{ .Chart.Name }}
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/proxy-body-size: "70m"
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer | quote }}
+    nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.ingress.proxyBodySize | quote }}
 spec:
+  ingressClassName: {{ .Values.ingress.className }}
   tls:
-  - hosts:
-    {{- range .Values.ingress.hosts }}
-    - {{ . }}
-    {{- end }}
-    secretName: {{ .Chart.Name }}-cert
+    - hosts:
+        {{- range .Values.ingress.hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .Chart.Name }}-cert
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ . }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . | quote }}
       http:
         paths:
           - path: /
@@ -25,5 +26,5 @@ spec:
                 name: {{ $.Chart.Name }}
                 port:
                   number: {{ $.Values.service.externalPort }}
-  {{- end }}
+    {{- end }}
 {{- end }}

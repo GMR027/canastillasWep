@@ -1,0 +1,38 @@
+@use 'variables' as v;
+
+@mixin telefono { @media (min-width: v.$telefono) { @content; } }
+@mixin tablet { @media (min-width: v.$tablet) { @content; } }
+@mixin escritorio { @media (min-width: v.$escritorio) { @content; } }
+@mixin escritorio-xl { @media (min-width: v.$escritorio-xl) { @content; } }
+@mixin solo-movil { @media (max-width: (v.$tablet - 1px)) { @content; } }
+
+@mixin grid($columnas: 1, $separacion: 2rem) {
+  display: grid;
+  grid-template-columns: repeat($columnas, minmax(0, 1fr));
+  gap: $separacion;
+}
+
+// Esquinas recortadas tipo placa de acero
+@mixin chaflan($tam: v.$chaflan) {
+  clip-path: polygon($tam 0, 100% 0, 100% calc(100% - #{$tam}), calc(100% - #{$tam}) 100%, 0 100%, 0 $tam);
+}
+
+// Textura sutil de puntos (antes reticula de placa diamantada)
+@mixin placa-diamantada($alfa: 0.035) {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, $alfa) 1.2px, transparent 1.7px);
+  background-size: 16px 16px;
+}
+
+// Panel claro para imagenes de producto (fondo blanco con cotas)
+@mixin panel-producto {
+  background:
+    radial-gradient(circle at 50% 40%, #ffffff 0%, var(--placa) 70%);
+
+  // Las imagenes de cotizaciones son JPG con fondo blanco: "multiply" hace
+  // que el blanco tome el color del panel (sin recuadro blanco).
+  img { mix-blend-mode: multiply; }
+}
+
+@mixin reducir-movimiento {
+  @media (prefers-reduced-motion: reduce) { @content; }
+}

@@ -1,0 +1,73 @@
+@use '../base/mixins' as m;
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.6rem;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--fuente-titulos);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color var(--transicion), color var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+  @include m.chaflan;
+
+  .icono { transition: transform var(--transicion); }
+
+  &:hover .icono:last-child:not(:first-child) { transform: translateX(3px); }
+  &:active { transform: translateY(1px); }
+
+  &--primario {
+    background: var(--degradado-acento);
+    color: #fff;
+    box-shadow: 0 10px 30px -12px rgba(243, 119, 54, 0.8);
+
+    &:hover { filter: brightness(1.08); }
+  }
+
+  &--contorno {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--texto);
+    box-shadow: inset 0 0 0 1px var(--borde-fuerte);
+
+    &:hover {
+      background: rgba(243, 119, 54, 0.15);
+      color: #fff;
+      box-shadow: inset 0 0 0 1px var(--acento);
+    }
+  }
+
+  &--claro {
+    background: #fff;
+    color: var(--fondo);
+
+    &:hover { background: var(--acento); color: #fff; }
+  }
+
+  &--chico {
+    padding: 0.7rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  &--bloque { width: 100%; }
+}
+
+.boton--peligro {
+  background: rgba(229, 72, 77, 0.14);
+  color: #ff8a8d;
+  box-shadow: inset 0 0 0 1px rgba(229, 72, 77, 0.5);
+
+  &:hover { background: #e5484d; color: #fff; }
+}
+
+.boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}

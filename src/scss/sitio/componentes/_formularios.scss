@@ -1,0 +1,154 @@
+@use '../base/mixins' as m;
+
+.tarjeta {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+
+  &--angosta { max-width: 32rem; margin-inline: auto; }
+
+  &__titulo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+
+    .icono { color: var(--acento); }
+  }
+}
+
+.formulario {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.campo {
+  display: grid;
+  gap: 0.4rem;
+
+  &__etiqueta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+  }
+
+  &__control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--fondo);
+    border: 1px solid var(--borde-fuerte);
+    border-radius: var(--radio);
+    color: var(--texto);
+    font: inherit;
+    transition: border-color var(--transicion), box-shadow var(--transicion);
+
+    &:focus {
+      outline: none;
+      border-color: var(--acento);
+      box-shadow: 0 0 0 3px rgba(243, 119, 54, 0.2);
+    }
+  }
+
+  textarea.campo__control { resize: vertical; min-height: 5rem; }
+
+  &__ayuda { font-size: 0.8rem; color: var(--texto-suave); }
+}
+
+.alerta {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid;
+  font-size: 0.95rem;
+
+  &--error { border-color: #e5484d; background: rgba(229, 72, 77, 0.12); color: #ffb3b5; }
+  &--exito { border-color: #30a46c; background: rgba(48, 164, 108, 0.12); color: #a7f0c8; }
+}
+
+// Avisos flotantes (flash)
+.avisos {
+  position: fixed;
+  top: calc(var(--alto-header) + 1rem);
+  right: 1rem;
+  left: 1rem;
+  z-index: 60;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: end;
+  pointer-events: none;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 28rem;
+  margin: 0;
+  padding: 0.9rem 0.75rem 0.9rem 1.1rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-fuerte);
+  border-left: 3px solid var(--acento);
+  box-shadow: var(--sombra);
+  pointer-events: auto;
+  animation: deslizar-arriba 0.4s ease;
+
+  &--exito { border-left-color: #30a46c; }
+  &--error { border-left-color: #e5484d; }
+
+  &__cerrar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    background: transparent;
+    color: var(--texto-suave);
+    cursor: pointer;
+
+    &:hover { color: #fff; }
+  }
+}
+
+// Selector de cantidad
+.cantidad {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--radio);
+  overflow: hidden;
+
+  &__boton {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    border: 0;
+    background: var(--superficie-2);
+    cursor: pointer;
+    transition: background-color var(--transicion);
+
+    &:hover { background: var(--acento); color: #fff; }
+    &:disabled { cursor: not-allowed; opacity: 0.5; }
+    &:disabled:hover { background: var(--superficie-2); color: inherit; }
+    .icono { width: 1rem; height: 1rem; }
+  }
+
+  &__control {
+    width: 3.5rem;
+    padding: 0.55rem 0.25rem;
+    border: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    &:focus { outline: 2px solid var(--acento); outline-offset: -2px; }
+    &:disabled { cursor: not-allowed; opacity: 0.6; }
+  }
+}

@@ -1,0 +1,82 @@
+@use '../base/mixins' as m;
+
+.auth {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding: calc(var(--alto-header) + 3rem) 0 4rem;
+  overflow: hidden;
+
+  &__fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(243, 119, 54, 0.2), transparent 55%),
+      radial-gradient(ellipse at 10% 90%, rgba(3, 57, 108, 0.42), transparent 60%),
+      var(--fondo-2);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      @include m.placa-diamantada(0.035);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+
+    @include m.escritorio { grid-template-columns: 1.1fr 1fr; gap: 5rem; }
+  }
+
+  &__titulo {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    margin-bottom: 2rem;
+  }
+
+  &__beneficios {
+    display: grid;
+    gap: 1rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      color: var(--texto-suave);
+    }
+
+    .icono {
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0.55rem;
+      color: var(--acento);
+      background: rgba(243, 119, 54, 0.12);
+      @include m.chaflan(7px);
+    }
+  }
+
+  &__tarjeta {
+    position: relative;
+    box-shadow: var(--sombra);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -1px -1px auto;
+      height: 3px;
+      background: var(--degradado-acento);
+    }
+  }
+
+  &__ayuda {
+    margin: 1.5rem 0 0;
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+
+    a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; }
+  }
+}

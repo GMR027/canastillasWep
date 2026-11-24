@@ -7,8 +7,8 @@ REPOSITORY="canastillas"
 NAMESPACE="canastillas"
 HELM_RELEASE="canastillas"
 HELM_CHART="./deployment"
+VALUES_LOCAL="./deployment/values.local.yaml"
 
-# Read and increment version
 if [ -f "$VERSION_FILE" ]; then
   VERSION=$(cat "$VERSION_FILE")
 else
@@ -26,8 +26,16 @@ echo ">>> Pushing image: ${IMAGE}"
 docker push "$IMAGE"
 
 echo ">>> Deploying version ${VERSION} via Helm..."
-helm upgrade --install "$HELM_RELEASE" "$HELM_CHART" \
-  --namespace "$NAMESPACE" \
-  --set image.tag="$VERSION"
+if [ -f "$VALUES_LOCAL" ]; then
+  helm upgrade --install "$HELM_RELEASE" "$HELM_CHART" \
+    --namespace "$NAMESPACE" \
+    -f "$VALUES_LOCAL" \
+    --set image.tag="$VERSION"
+else
+  echo "AVISO: no existe ${VALUES_LOCAL}; se usan los valores por defecto."
+  helm upgrade --install "$HELM_RELEASE" "$HELM_CHART" \
+    --namespace "$NAMESPACE" \
+    --set image.tag="$VERSION"
+fi
 
 echo ">>> Done. Deployed ${IMAGE}"

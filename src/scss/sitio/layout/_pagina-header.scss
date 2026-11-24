@@ -1,0 +1,52 @@
+@use '../base/mixins' as m;
+
+.pagina-header {
+  position: relative;
+  padding: calc(var(--alto-header) + clamp(2.5rem, 7vw, 5rem)) 0 clamp(2.5rem, 6vw, 4rem);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(243, 119, 54, 0.18), transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(18, 77, 132, 0.35), transparent 60%),
+    var(--fondo-2);
+  border-bottom: 1px solid var(--borde);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    @include m.placa-diamantada(0.03);
+    mask-image: linear-gradient(to bottom, #000, transparent);
+    pointer-events: none;
+  }
+
+  .contenedor { position: relative; }
+
+  &__titulo {
+    font-size: clamp(2.75rem, 8vw, 5rem);
+    margin-bottom: 1rem;
+  }
+
+  &__texto {
+    max-width: 40rem;
+    font-size: 1.125rem;
+    color: var(--texto-suave);
+  }
+}
+
+.migas ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+
+  li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    opacity: 0.5;
+  }
+
+  a:hover { color: var(--acento); }
+  [aria-current] { color: var(--texto); }
+}

@@ -1,0 +1,230 @@
+@use '../base/mixins' as m;
+
+// Acta de entrega compacta: mas espacio para productos y fotos.
+.pagina-acta {
+  background: #eef1f4;
+  color: #33343a;
+}
+
+.acta {
+  width: min(100% - 2rem, 52rem);
+  margin: 2rem auto;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  background: #fff;
+  box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.35);
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 0.84rem;
+  line-height: 1.35;
+
+  &__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  &__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #2f5f8c;
+  }
+
+  &__marca {
+    max-width: 28rem;
+
+    img { width: min(100%, 12rem); height: auto; }
+    h1 { margin: 0.45rem 0 0.15rem; color: #2f5f8c; font-size: 1.35rem; }
+  }
+
+  &__negocio {
+    margin: 0;
+    color: #6b6b70;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  &__folio {
+    text-align: right;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+
+    strong { display: block; color: #2f5f8c; font-size: 1rem; }
+    p { margin: 0; color: #6b6b70; }
+  }
+
+  &__bloque {
+    margin-top: 0.45rem;
+    padding: 0.45rem 0.65rem;
+    background: #f7f9fb;
+    border: 1px solid #d9dde3;
+
+    h2 {
+      margin: 0 0 0.2rem;
+      color: #2f5f8c;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    p { margin: 0.1rem 0; }
+  }
+
+  &__datos {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: 0.2rem 0.9rem;
+
+    span {
+      display: block;
+      color: #6b6b70;
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    strong { font-weight: 600; overflow-wrap: anywhere; }
+  }
+
+  &__chico {
+    color: #6b6b70;
+    font-size: 0.72rem;
+  }
+
+  &__notas {
+    margin-top: 0.4rem !important;
+    padding-top: 0.35rem;
+    border-top: 1px solid #d9dde3;
+  }
+
+  &__estado {
+    display: inline-block;
+    padding: 0.05rem 0.4rem;
+    border: 1px solid #2f5f8c;
+    color: #2f5f8c;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__tabla {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-top: 0.15rem;
+
+    th, td {
+      padding: 0.22rem 0.35rem;
+      border: 1px solid #e0e3e8;
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    th:nth-child(1), td:nth-child(1) { width: 52%; }
+    th:nth-child(2), td:nth-child(2) { width: 23%; }
+    th:nth-child(3), td:nth-child(3) { width: 25%; }
+
+    th {
+      background: #eaf1f8;
+      border-color: #c7dcef;
+      color: #2f5f8c;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .num { text-align: right; white-space: nowrap; }
+  }
+
+  &__fotos {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+
+    @include m.solo-movil { grid-template-columns: 1fr; }
+
+    figure { margin: 0; text-align: center; }
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border: 1px solid #d9dde3;
+    }
+
+    figcaption {
+      margin-top: 0.15rem;
+      color: #6b6b70;
+      font-size: 0.66rem;
+    }
+  }
+
+  &__pie {
+    margin-top: 0.65rem;
+    overflow-wrap: anywhere;
+    padding-top: 0.45rem;
+    border-top: 1px solid #d9dde3;
+    color: #8a8a90;
+    font-size: 0.66rem;
+    text-align: center;
+
+    p { margin: 0.1rem 0; }
+  }
+
+  @include m.solo-movil {
+    width: calc(100% - 1rem);
+    margin: 0.5rem auto;
+    padding: 0.7rem;
+
+    &__acciones .boton { flex: 1 1 100%; }
+
+    &__cabecera {
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    &__marca {
+      max-width: 100%;
+    }
+
+    &__folio {
+      text-align: left;
+    }
+
+    &__datos {
+      grid-template-columns: 1fr;
+    }
+
+    &__fotos {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media print {
+  @page { margin: 1.3cm 1.1cm; }
+
+  .pagina-acta { background: #fff; }
+  .acta {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    font-size: 9pt;
+  }
+  .acta__acciones { display: none; }
+  .acta__bloque { break-inside: avoid; }
+  .acta__fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

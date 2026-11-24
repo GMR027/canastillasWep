@@ -1,0 +1,154 @@
+@use '../base/mixins' as m;
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--alto-header);
+  background: rgba(15, 17, 20, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+  transition: background-color var(--transicion), border-color var(--transicion);
+
+  // En el inicio empieza transparente sobre el hero
+  &--transparente:not(.is-scrolled):not(.is-abierto) {
+    background: transparent;
+    backdrop-filter: none;
+    border-color: transparent;
+  }
+
+  // backdrop-filter crea un bloque contenedor y el panel fijo del menu quedaria con alto 0
+  &.is-abierto {
+    background: var(--fondo);
+    backdrop-filter: none;
+  }
+
+  &__barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__menu-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--borde-fuerte);
+    border-radius: var(--radio);
+    background: transparent;
+    cursor: pointer;
+
+    .icono { width: 1.5rem; height: 1.5rem; }
+    .icono--cerrar { display: none; }
+
+    @include m.escritorio { display: none; }
+  }
+
+  &.is-abierto &__menu-btn {
+    .icono--abrir { display: none; }
+    .icono--cerrar { display: block; }
+  }
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &__logo {
+    width: auto;
+    height: auto;
+    max-height: 2.35rem;
+    max-width: 11rem;
+    object-fit: contain;
+
+    @include m.solo-movil { max-height: 1.9rem; max-width: 10rem; }
+  }
+
+  &__texto {
+    font-family: var(--fuente-titulos);
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+
+    strong { font-weight: 700; color: var(--acento); }
+  }
+}
+
+.navegacion {
+  // Movil: panel desplegable
+  position: fixed;
+  inset: var(--alto-header) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.5rem 1rem 2rem;
+  background-color: var(--fondo);
+  @include m.placa-diamantada(0.025);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.75rem);
+  transition: opacity var(--transicion), transform var(--transicion), visibility var(--transicion);
+
+  .is-abierto & {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  &__enlace {
+    position: relative;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--borde);
+    font-family: var(--fuente-titulos);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+    transition: color var(--transicion);
+
+    &:hover, &.is-activo { color: #fff; }
+  }
+
+  &__cta { margin-top: 1.5rem; }
+
+  @include m.escritorio {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0;
+    background: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+
+    &__enlace {
+      padding: 0.5rem 0;
+      border: 0;
+      font-size: 0.98rem;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: var(--degradado-acento);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--transicion);
+      }
+
+      &:hover::after, &.is-activo::after { transform: scaleX(1); }
+    }
+
+    &__cta { margin: 0 0 0 0.25rem; }
+  }
+}

@@ -1,0 +1,20 @@
+// Canastillas de la Baja — sitio publico
+@use 'sitio/base/normalize';
+@use 'sitio/base/globales';
+@use 'sitio/componentes/botones';
+@use 'sitio/componentes/etiquetas';
+@use 'sitio/componentes/secciones';
+@use 'sitio/componentes/animaciones';
+@use 'sitio/componentes/modal';
+@use 'sitio/componentes/formularios';
+@use 'sitio/componentes/insignias';
+@use 'sitio/layout/header';
+@use 'sitio/layout/footer';
+@use 'sitio/layout/whatsapp';
+@use 'sitio/layout/pagina-header';
+@use 'sitio/paginas/inicio';
+@use 'sitio/paginas/productos';
+@use 'sitio/paginas/auth';
+@use 'sitio/paginas/cuenta';
+@use 'sitio/paginas/acta';
+@use 'sitio/paginas/error';

@@ -1,0 +1,560 @@
+@use '../base/mixins' as m;
+
+// ---------- Hero ----------
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding: calc(var(--alto-header) + 3rem) 0 6rem;
+  overflow: hidden;
+  isolation: isolate;
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: var(--portada) center / cover no-repeat;
+  }
+
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    @include m.solo-movil { display: none; }
+    @include m.reducir-movimiento { display: none; }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(15, 17, 20, 0.95) 0%, rgba(15, 17, 20, 0.75) 45%, rgba(15, 17, 20, 0.35) 100%),
+      linear-gradient(to top, var(--fondo) 0%, transparent 35%);
+  }
+
+  &__contenido { max-width: 76rem; }
+
+  &__titulo {
+    max-width: 14ch;
+    margin-bottom: 1.5rem;
+    font-size: clamp(3.25rem, 10vw, 7.5rem);
+    line-height: 0.92;
+  }
+
+  &__texto {
+    max-width: 36rem;
+    margin-bottom: 2.5rem;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: #c9cfd6;
+  }
+
+  &__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 2rem;
+    width: 1.6rem;
+    height: 2.6rem;
+    border: 2px solid var(--borde-fuerte);
+    border-radius: 1rem;
+    transform: translateX(-50%);
+
+    span {
+      position: absolute;
+      top: 0.45rem;
+      left: 50%;
+      width: 4px;
+      height: 0.6rem;
+      border-radius: 2px;
+      background: var(--acento);
+      animation: rebote 1.8s ease-in-out infinite;
+    }
+
+    @include m.solo-movil { display: none; }
+  }
+}
+
+// ---------- Cifras ----------
+.cifras {
+  position: relative;
+  z-index: 1;
+  margin-top: -3.5rem;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    box-shadow: var(--sombra);
+
+    @include m.tablet { grid-template-columns: repeat(3, 1fr); }
+  }
+}
+
+.cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.75rem 1.5rem;
+  border-right: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+
+  &__numero {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    background: var(--degradado-acento);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  &__texto {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}
+
+// ---------- Nosotros ----------
+.nosotros {
+  &__grid {
+    display: grid;
+    gap: 3.5rem;
+    align-items: center;
+
+    @include m.escritorio { grid-template-columns: 1fr 1.1fr; gap: 5rem; }
+  }
+
+  &__imagen {
+    position: relative;
+    margin: 0 1.25rem 1.25rem 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1.25rem -1.25rem -1.25rem 1.25rem;
+      border: 2px solid var(--acento);
+      z-index: -1;
+    }
+
+    img {
+      width: 100%;
+      aspect-ratio: 671 / 574;
+      object-fit: cover;
+      filter: saturate(0.9) contrast(1.05);
+    }
+  }
+
+  &__sello {
+    position: absolute;
+    left: -0.5rem;
+    bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+    background: var(--degradado-acento);
+    color: #fff;
+    box-shadow: var(--sombra);
+    @include m.chaflan(12px);
+
+    @include m.tablet { left: -1.5rem; }
+  }
+
+  &__sello-numero {
+    font-family: var(--fuente-titulos);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__sello-texto {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+}
+
+.valores {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.valor {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+
+  > .icono {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.7rem;
+    background: rgba(243, 119, 54, 0.12);
+    border: 1px solid rgba(243, 119, 54, 0.35);
+    color: var(--acento);
+    @include m.chaflan(8px);
+  }
+
+  strong {
+    display: block;
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  span { color: var(--texto-suave); }
+}
+
+// ---------- Categorias ----------
+.categorias {
+  display: grid;
+  gap: 1.5rem;
+
+  @include m.tablet { grid-template-columns: repeat(2, 1fr); }
+  @include m.escritorio-xl { grid-template-columns: repeat(4, 1fr); }
+}
+
+.categoria {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  overflow: hidden;
+  transition: border-color var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    height: 3px;
+    background: var(--degradado-acento);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  &:hover {
+    border-color: rgba(243, 119, 54, 0.5);
+    transform: translateY(-6px);
+    box-shadow: var(--sombra);
+
+    &::before { transform: scaleX(1); }
+    .categoria__imagen img { transform: scale(1.08) rotate(-1.5deg); }
+    .categoria__enlace { color: var(--acento); }
+    .categoria__numero { -webkit-text-stroke-color: var(--acento); }
+    .categoria__enlace .icono { transform: translateX(4px); }
+  }
+
+  &__imagen {
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    overflow: hidden;
+    @include m.panel-producto;
+
+    img {
+      max-height: 100%;
+      width: auto;
+      object-fit: contain;
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+  }
+
+  &__cuerpo {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.75rem 1.5rem 1.5rem;
+  }
+
+  &__numero {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-family: var(--fuente-titulos);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.16);
+    transition: -webkit-text-stroke-color var(--transicion);
+  }
+
+  &__titulo {
+    max-width: calc(100% - 3.5rem);
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__texto {
+    flex: 1;
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+  }
+
+  &__enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-family: var(--fuente-titulos);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color var(--transicion);
+
+    .icono { transition: transform var(--transicion); }
+  }
+}
+
+// ---------- Como comprar ----------
+.pasos {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  counter-reset: paso;
+
+  @include m.tablet {
+    grid-template-columns: repeat(3, 1fr);
+
+    // Linea que une los pasos
+    &::before {
+      content: '';
+      position: absolute;
+      top: 3.25rem;
+      left: 16%;
+      right: 16%;
+      border-top: 2px dashed rgba(243, 119, 54, 0.4);
+    }
+  }
+}
+
+.paso {
+  position: relative;
+  padding: 2rem 1.75rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  text-align: center;
+
+  &__numero {
+    position: absolute;
+    top: 1rem;
+    left: 1.25rem;
+    font-family: var(--fuente-titulos);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--texto-suave);
+
+    &::before { content: '0'; }
+  }
+
+  &__icono {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-bottom: 1.25rem;
+    background: var(--degradado-acento);
+    color: #fff;
+    @include m.chaflan(12px);
+
+    .icono { width: 2rem; height: 2rem; }
+  }
+
+  &__titulo {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__texto {
+    margin: 0;
+    color: var(--texto-suave);
+  }
+}
+
+// ---------- Cobertura ----------
+.cobertura {
+  background:
+    radial-gradient(ellipse at 100% 50%, rgba(3, 57, 108, 0.35), transparent 60%),
+    var(--fondo);
+
+  &__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+
+    @include m.escritorio { grid-template-columns: 1.1fr 1fr; gap: 5rem; }
+  }
+
+  &__imagen {
+    position: relative;
+
+    img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      @include m.chaflan(24px);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: -0.75rem;
+      bottom: -0.75rem;
+      width: 40%;
+      height: 40%;
+      border-right: 3px solid var(--acento);
+      border-bottom: 3px solid var(--acento);
+      pointer-events: none;
+    }
+  }
+}
+
+// ---------- Instalacion ----------
+.instalacion {
+  &__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+
+    @include m.escritorio { grid-template-columns: 1fr 1.1fr; gap: 5rem; }
+  }
+
+  &__imagen {
+    position: relative;
+
+    img {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: contain;
+      padding: 1.25rem;
+      @include m.panel-producto;
+      @include m.chaflan(18px);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: -0.75rem;
+      bottom: -0.75rem;
+      width: 35%;
+      height: 35%;
+      border-right: 3px solid var(--acento);
+      border-bottom: 3px solid var(--acento);
+      pointer-events: none;
+    }
+  }
+}
+
+// ---------- CTA final ----------
+.cta-final {
+  &__contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    background:
+      radial-gradient(ellipse at 100% 0%, rgba(243, 119, 54, 0.2), transparent 55%),
+      var(--superficie);
+    border: 1px solid var(--borde-fuerte);
+    @include m.chaflan(20px);
+
+    .titulo-seccion { margin-bottom: 0.75rem; }
+    p { color: var(--texto-suave); margin-bottom: 0; }
+
+    @include m.tablet {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+// ---------- Galeria de entregas (Accordion Image Gallery) ----------
+.entregas-galeria {
+  padding-top: 0;
+
+  &__lista {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 70vh;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: flex 0.8s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15, 17, 20, 0.35), transparent 45%);
+      opacity: 0;
+      transition: opacity var(--transicion);
+    }
+
+    &:hover,
+    &--activo {
+      flex: 7;
+
+      &::after { opacity: 1; }
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  @include m.reducir-movimiento {
+    &__item { transition: none; }
+  }
+}
+
+@include m.solo-movil {
+  .entregas-galeria__lista {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    height: auto;
+  }
+
+  .entregas-galeria__item {
+    height: 12rem;
+    flex: none;
+    @include m.chaflan(8px);
+
+    &:hover, &--activo { flex: none; }
+  }
+}

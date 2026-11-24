@@ -1,0 +1,4 @@
+# Copia este archivo como values.local.yaml (no se sube a git) y llena los secretos.
+secrets:
+  dbPassword: "<password de portal_canastillas>"
+  portalFotosSecreto: "<mismo PORTAL_FOTOS_SECRETO de cotizaciones>"

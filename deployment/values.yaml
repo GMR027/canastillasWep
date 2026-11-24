@@ -1,24 +1,38 @@
+# ===========================================================================
+# values.yaml — sitio público de Canastillas de la Baja
+#
+# El sitio no tiene MySQL propio: lee catálogo, fotos de entrega y (después)
+# clientes de la base de datos de cotizaciones.
+# ===========================================================================
+
 replicaCount: 1
-
-volume:
-  name: 'shared-volume'
-  mountPath: /var/www/public/image
-  storageClassName: ''
-  accessMode: ReadWriteMany
-  size: 8Gi
-
-config:
-  ENV: production
-  DB_HOST: mysql.canastillas.svc.cluster.local
-  DB_NAME: canastillas
-  DB_USER: canastillas
-  DB_PASSWORD: canastillas
 
 image:
   registry: gmr27
   repository: canastillas
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
+
+app:
+  entorno: produccion
+  # Id de "Canastillas de la Baja" en la tabla empresas de cotizaciones
+  empresaId: "2"
+
+db:
+  host: mysql.cotizaciones.svc.cluster.local
+  port: "3306"
+  name: cotizaciones
+  # Usuario de solo lectura para catálogo y fotos.
+  user: portal_canastillas
+
+cotizaciones:
+  # Servicio interno que sirve /public/image y /portal/entregas/foto
+  url: http://cotizaciones.cotizaciones.svc.cluster.local
+
+# Credenciales — sobrescribir en values.local.yaml
+secrets:
+  dbPassword: ""
+  portalFotosSecreto: ""
 
 service:
   type: ClusterIP
@@ -27,19 +41,21 @@ service:
 
 ingress:
   enabled: true
+  className: public
+  clusterIssuer: letsencrypt-prod
+  proxyBodySize: 2m
   hosts:
     - canastillas.iguzman.com.mx
     - canastillasdelabaja.com
     - www.canastillasdelabaja.com
 
 resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 50m
+    memory: 96Mi
+  limits:
+    memory: 384Mi
 
 deployment:
   nodeSelector:
-    nodeProjects: 'real-clients'
+    nodeProjects: real-clients

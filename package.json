@@ -1,12 +1,13 @@
 {
   "name": "canastillas-de-la-baja",
-  "version": "1.5.0",
-  "description": "Pagina web 1.5version",
+  "version": "2.0.0",
+  "description": "Sitio publico de Canastillas de la Baja sobre la base de datos de cotizaciones",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "sass": "sass --watch src/scss:build/css",
-    "build": "gulp build"
+    "build": "gulp build",
+    "dev": "gulp",
+    "serve": "php -S localhost:8000 -t . index.php"
   },
   "keywords": [
     "html",

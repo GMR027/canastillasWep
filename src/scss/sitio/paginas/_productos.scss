@@ -1,0 +1,121 @@
+@use '../base/mixins' as m;
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
+  gap: 1.5rem;
+}
+
+.producto {
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  transition: border-color var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+
+  &:hover {
+    border-color: rgba(243, 119, 54, 0.5);
+    transform: translateY(-4px);
+    box-shadow: var(--sombra);
+
+    .producto__imagen img { transform: scale(1.05); }
+  }
+
+  &__imagen {
+    position: relative;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    overflow: hidden;
+    @include m.panel-producto;
+
+    img {
+      max-height: 100%;
+      width: auto;
+      object-fit: contain;
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+  }
+
+  &__sku {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    z-index: 1;
+    padding: 0.35rem 0.75rem;
+    background: var(--fondo);
+    color: var(--acento);
+    font-family: var(--fuente-titulos);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    @include m.chaflan(6px);
+  }
+
+  &__cuerpo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+
+    .boton { margin-top: auto; }
+  }
+
+  &__titulo { font-size: 1.45rem; }
+
+  &__subtitulo {
+    margin: 0;
+    color: var(--texto-suave);
+    font-size: 0.925rem;
+  }
+
+  &__dato {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    .icono { color: var(--acento); }
+  }
+}
+
+.otras-lineas {
+  display: grid;
+  gap: 1rem;
+
+  @include m.tablet { grid-template-columns: repeat(3, 1fr); }
+}
+
+.otra-linea {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  font-family: var(--fuente-titulos);
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: border-color var(--transicion), color var(--transicion);
+
+  img {
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0.4rem;
+    object-fit: contain;
+    @include m.panel-producto;
+  }
+
+  span { flex: 1; }
+  .icono { color: var(--acento); transition: transform var(--transicion); }
+
+  &:hover {
+    border-color: var(--acento);
+    .icono { transform: translateX(4px); }
+  }
+}

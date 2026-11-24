@@ -1,0 +1,44 @@
+@use '../base/mixins' as m;
+
+// "Eyebrow" sobre los titulos
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: var(--acento);
+  font-family: var(--fuente-titulos);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    width: 2rem;
+    height: 2px;
+    background: var(--degradado-acento);
+  }
+
+  &--hero { color: var(--acento-claro); }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.75rem 0 2rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-size: 0.9rem;
+
+  .icono { color: var(--acento); width: 1rem; height: 1rem; }
+}

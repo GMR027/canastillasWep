@@ -1,0 +1,63 @@
+@use '../base/mixins' as m;
+
+.footer {
+  position: relative;
+  padding-top: 4.5rem;
+  background: #0b0c0e;
+  border-top: 1px solid var(--borde);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--acento), transparent);
+  }
+
+  &__grid {
+    display: grid;
+    gap: 2.5rem;
+
+    @include m.tablet { grid-template-columns: repeat(2, 1fr); }
+    @include m.escritorio { grid-template-columns: 1.6fr 1fr 1fr 1.2fr; }
+  }
+
+  &__marca p {
+    margin-top: 1.25rem;
+    max-width: 22rem;
+    color: var(--texto-suave);
+  }
+
+  &__titulo {
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+    color: var(--texto-suave);
+  }
+
+  &__lista {
+    display: grid;
+    gap: 0.75rem;
+
+    a, span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--texto);
+      transition: color var(--transicion);
+    }
+
+    a:hover { color: var(--acento); }
+    .icono { color: var(--acento); }
+  }
+
+  &__legal {
+    margin-top: 3.5rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--borde);
+    font-size: 0.875rem;
+    color: var(--texto-suave);
+
+    p { margin: 0; }
+  }
+}

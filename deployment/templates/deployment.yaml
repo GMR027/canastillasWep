@@ -12,55 +12,30 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
-      # initContainers:
-      # - name: fix-volume-permissions
-      #   image: busybox
-      #   command: ["sh", "-c", "chmod -R 777 /data"]
-      #   volumeMounts:
-      #   - name: {{ .Values.volume.name }}
-      #     mountPath: /data
       containers:
-      - name: {{ .Chart.Name }}
-        image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        ports:
-        - containerPort: {{ .Values.service.internalPort }}
-        {{- if .Values.config }}
-        env:
-        {{- range $key, $value := .Values.config }}
-        - name: {{ $key }}
-          valueFrom:
-            configMapKeyRef:
-              name: {{ $.Chart.Name }}
-              key: {{ $key }}
-        {{- end }}
-        {{- end }}
-        resources:
-          {{- toYaml .Values.resources | nindent 12 }}
-        startupProbe:
-          exec:
-            command:
-            - test
-            - -d
-            - {{ .Values.volume.mountPath }}
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          exec:
-            command:
-            - test
-            - -d
-            - {{ .Values.volume.mountPath }}
-        {{- if .Values.volume }}
-        volumeMounts:
-        - name: {{ .Values.volume.name }}
-          mountPath: {{ .Values.volume.mountPath }}
-        {{- end }}
-      {{- if .Values.volume }}
-      volumes:
-      - name: {{ .Values.volume.name }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.volume.name }}
-      {{- end }}
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}
+            - secretRef:
+                name: {{ .Chart.Name }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /build/css/sitio.css
+              port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /build/css/sitio.css
+              port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: 20
+            periodSeconds: 20
       nodeSelector:
-          {{- toYaml .Values.deployment.nodeSelector | nindent 12 }}
+        {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}

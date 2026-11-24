@@ -1,0 +1,41 @@
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &--pendiente { background: rgba(255, 178, 36, 0.14); color: #ffc53d; }
+  &--cotizado { background: rgba(100, 151, 177, 0.18); color: #8ec5e3; }
+  &--vendido,
+  &--entregado { background: rgba(48, 164, 108, 0.16); color: #4cc38a; }
+  &--cancelado { background: rgba(255, 255, 255, 0.07); color: var(--texto-suave); }
+}
+
+.insignia--en-proceso {
+  background: rgba(255, 178, 36, 0.14);
+  color: #ffc53d;
+}
+
+.insignia--entregada {
+  background: rgba(48, 164, 108, 0.16);
+  color: #4cc38a;
+}
+
+.insignia--cancelada {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--texto-suave);
+}

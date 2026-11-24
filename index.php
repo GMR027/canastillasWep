@@ -1,61 +1,43 @@
 <?php
-require 'includes/app.php';
-require 'Router.php';
+
+// Servidor de desarrollo (php -S localhost:8000 -t . index.php):
+// los archivos reales (CSS, JS, imagenes, video) los sirve el propio servidor.
+if (PHP_SAPI === 'cli-server') {
+    $ruta = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+    if (is_string($ruta) && $ruta !== '/' && !str_contains($ruta, '..') && is_file(__DIR__ . $ruta)) {
+        return false;
+    }
+}
+
+require_once __DIR__ . '/includes/app.php';
+
+use Controllers\AuthController;
+use Controllers\CuentaController;
+use Controllers\FotosController;
+use Controllers\ImagenesController;
+use Controllers\PaginasController;
+use MVC\Router;
 
 $router = new Router();
 
-// Publica
-$router->get('/',       'views/inicio.php');
-$router->get('/login',  'views/login.php');
-$router->post('/login', 'views/login.php');
-$router->get('/logout', 'views/logout.php');
+// Sitio publico
+$router->get('/', [PaginasController::class, 'inicio']);
 
-// Admin — reportes
-$router->get('/admin',                    'views/admin/index.php',            'soloAdmin');
-$router->post('/admin',                   'views/admin/index.php',            'soloAdmin');
-$router->get('/admin/reportes/crear',     'views/admin/reportes/crear.php',   'soloAdmin');
-$router->post('/admin/reportes/crear',    'views/admin/reportes/crear.php',   'soloAdmin');
-$router->get('/admin/reportes/editar',    'views/admin/reportes/editar.php',  'soloAdmin');
-$router->post('/admin/reportes/editar',   'views/admin/reportes/editar.php',  'soloAdmin');
-$router->get('/admin/reportes/detalle',   'views/admin/reportes/detalle.php', 'soloAdmin');
-$router->get('/admin/reportes/recibo',    'views/admin/reportes/recibo.php',  'soloAdmin');
+// Portal de clientes: sesion
+$router->get('/login', [AuthController::class, 'login']);
+$router->post('/login', [AuthController::class, 'login']);
+$router->post('/logout', [AuthController::class, 'logout']);
 
-// Admin — productos
-$router->get('/admin/productos',          'views/admin/productos/index.php',  'soloAdmin');
-$router->post('/admin/productos',         'views/admin/productos/index.php',  'soloAdmin');
-$router->get('/admin/productos/crear',    'views/admin/productos/crear.php',  'soloAdmin');
-$router->post('/admin/productos/crear',   'views/admin/productos/crear.php',  'soloAdmin');
-$router->get('/admin/productos/editar',   'views/admin/productos/editar.php', 'soloAdmin');
-$router->post('/admin/productos/editar',  'views/admin/productos/editar.php', 'soloAdmin');
+// Portal de clientes: compras de solo consulta
+$router->get('/mi-cuenta', [CuentaController::class, 'inicio']);
+$router->get('/mi-cuenta/compras', [CuentaController::class, 'compras']);
+$router->get('/mi-cuenta/compras/{id:[0-9]+}', [CuentaController::class, 'detalle']);
+$router->get('/mi-cuenta/entregas/{id:[0-9]+}/acta', [CuentaController::class, 'acta']);
+$router->get('/mi-cuenta/entregas/{id:[0-9]+}/firma', [FotosController::class, 'firma']);
+$router->get('/mi-cuenta/fotos/{id:[0-9]+}', [FotosController::class, 'foto']);
 
-// Admin — pedidos
-$router->get('/admin/pedidos',            'views/admin/pedidos/index.php',    'soloAdmin');
-$router->post('/admin/pedidos',           'views/admin/pedidos/index.php',    'soloAdmin');
-$router->get('/admin/pedidos/crear',      'views/admin/pedidos/crear.php',    'soloAdmin');
-$router->post('/admin/pedidos/crear',     'views/admin/pedidos/crear.php',    'soloAdmin');
-$router->get('/admin/pedidos/detalle',    'views/admin/pedidos/detallePedido.php', 'soloAdmin');
-$router->get('/admin/pedidos/editar',     'views/admin/pedidos/editar.php',   'soloAdmin');
-$router->post('/admin/pedidos/editar',    'views/admin/pedidos/editar.php',   'soloAdmin');
+// Imagenes servidas desde cotizaciones
+$router->get('/img/entregas/{id:[0-9]+}', [FotosController::class, 'galeria']);
+$router->get('/img/catalogo/{archivo:[A-Za-z0-9_-]+\.(?:jpe?g|png|webp)}', [ImagenesController::class, 'catalogo']);
 
-// Admin — usuarios
-$router->get('/admin/usuarios',           'views/admin/usuarios/index.php',   'soloAdmin');
-$router->post('/admin/usuarios',          'views/admin/usuarios/index.php',   'soloAdmin');
-$router->get('/admin/usuarios/crear',     'views/admin/usuarios/crear.php',   'soloAdmin');
-$router->post('/admin/usuarios/crear',    'views/admin/usuarios/crear.php',   'soloAdmin');
-$router->get('/admin/usuarios/editar',    'views/admin/usuarios/editar.php',  'soloAdmin');
-$router->post('/admin/usuarios/editar',   'views/admin/usuarios/editar.php',  'soloAdmin');
-
-// Admin — agenda
-$router->get('/admin/agenda/index',       'views/admin/agenda/index.php',  'soloAdmin');
-
-// Cliente
-$router->get('/cliente',          'views/cliente/index.php',   'soloCliente');
-$router->get('/cliente/detalle',  'views/cliente/detalle.php', 'soloCliente');
-
-// Proveedor
-$router->get('/proveedor', 'views/proveedor/index.php', 'soloProveedor');
-
-$vista = $router->comprobarRutas();
-if ($vista) {
-    include $vista;
-}
+$router->comprobarRutas();

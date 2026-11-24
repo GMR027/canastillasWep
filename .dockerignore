@@ -1,10 +1,7 @@
 .git/
 node_modules/
 vendor/
-mysql/
+includes/.env
 *.md
 .gitignore
-package-lock.json
-gulpfile.js
-netlify.toml
-backup-images/
+deployment/values.local.yaml

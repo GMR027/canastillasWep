@@ -1,18 +1,15 @@
 {
-    "name": "edgar/canastillas-wep",
-    "description": "Proyecto canastillas la baja",
-    "authors": [
-        {
-            "name": "Edgar",
-            "email": "e.gm27@outlook.com"
-        }
-    ],
+    "name": "edgar/canastillas-de-la-baja",
+    "description": "Sitio publico de Canastillas de la Baja sobre la base de datos de cotizaciones",
+    "type": "project",
     "require": {
-        "intervention/image": "^3.11"
+        "php": ">=8.1"
     },
     "autoload": {
         "psr-4": {
-            "App\\": "./clases"
+            "Model\\": "models/",
+            "Controllers\\": "controllers/",
+            "MVC\\": "router/"
         }
     }
 }
